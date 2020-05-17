@@ -14,6 +14,7 @@
     "bcrypt": "^4.0.1",
     "crypto-js": "^4.0.0",
     "express": "^4.17.1",
+    "http-status-codes": "^1.4.0",
     "module-alias": "^2.2.2",
     "morgan": "^1.10.0",
     "mysql2": "^2.1.0",
@@ -22,6 +23,7 @@
     "webpack": "^4.43.0"
   },
   "_moduleAliases": {
-    "@root": "."
+    "@root": ".",
+    "@src": "./src"
   }
 }
