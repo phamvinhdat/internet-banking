@@ -1,4 +1,5 @@
 const {DataTypes} = require('sequelize');
+const sequelize = require('./index')
 
 const AssociateBank = sequelize.define('associate_banks', {
     id: {
