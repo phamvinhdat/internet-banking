@@ -4,13 +4,24 @@
   "description": "internet banking app",
   "main": "src/app.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "local": "node src/app",
+    "start": "ENV=development npm run local"
   },
   "author": "datpv hungtq",
   "license": "ISC",
   "dependencies": {
+    "bcrypt": "^4.0.1",
+    "crypto-js": "^4.0.0",
     "express": "^4.17.1",
+    "module-alias": "^2.2.2",
     "morgan": "^1.10.0",
-    "openpgp": "^4.10.4"
+    "mysql2": "^2.1.0",
+    "openpgp": "^4.10.4",
+    "sequelize": "^5.21.9",
+    "webpack": "^4.43.0"
+  },
+  "_moduleAliases": {
+    "@root": "."
   }
 }
