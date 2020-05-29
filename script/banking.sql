@@ -11,8 +11,9 @@ CREATE TABLE IF NOT EXISTS `users`(
   `id`             BIGINT(20) NOT NULL AUTO_INCREMENT,
   `bank_code`      VARCHAR(255),
   `name`           VARCHAR(255),
-  `email`          VARCHAR(255) NOT NULL,
+  `email`          VARCHAR(255) NOT NULL UNIQUE,
   `password`       VARCHAR(255) NOT NULL,
+  `refresh_token`  VARCHAR(255),
   `account_number` VARCHAR(255) NOT NULL UNIQUE,
   `balance`        BIGINT(20) NOT NULL DEFAULT 0,
   `create_at`      TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
@@ -69,5 +70,5 @@ CREATE TABLE IF NOT EXISTS `receivers`(
 )ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 INSERT INTO `roles` (`role`, `create_at`, `update_at`) VALUES
-("customer", NOW(), NOW()),
+("customerassociate_banks", NOW(), NOW()),
 ("staff", NOW(), NOW())

@@ -1,4 +1,5 @@
 const {DataTypes} = require('sequelize');
+const sequelize = require('./index')
 
 const UserRole = sequelize.define('user_roles', {
     user_id: {

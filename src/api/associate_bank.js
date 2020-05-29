@@ -2,6 +2,7 @@ const express = require('express')
 const httpSttCode = require('http-status-codes')
 const associateBankService = require("@src/service/associate_bank")
 const createError = require('http-errors')
+const validator = require('@src/validator/associate_bank')
 
 const router = express.Router()
 
@@ -15,18 +16,8 @@ const BANK_CODE = 'bankCode'
         signature: 'sdfsdfdsfsdsdfsdf' // HmacSHA512 of payload and secret_key
     }
  */
-router.post(`/:${BANK_CODE}/account-info`, async (req, res) => {
+router.post(`/:${BANK_CODE}/account-info`, validator.pgpProtocol(), async (req, res) => {
     const bankCode = req.param(BANK_CODE)
-    if (bankCode === '') {
-        throw createError(httpSttCode.BAD_REQUEST, 'bank code is null')
-    }
-
-    console.log(bankCode)
-
-    if (!req.body.signature || !req.body.payload) {
-        throw createError(httpSttCode.BAD_REQUEST,
-            'signature or (and) payload is null')
-    }
 
     const accountInfo = await associateBankService.getAccountInfo(bankCode,
         req.body.payload, req.body.signature)
@@ -35,6 +26,27 @@ router.post(`/:${BANK_CODE}/account-info`, async (req, res) => {
         .json({
             message: 'success',
             data: accountInfo
+        })
+})
+
+router.post(`/:${BANK_CODE}/transfer`, async (req, res) => {
+    const bankCode = req.param(BANK_CODE)
+    if (bankCode === '') {
+        throw createError(httpSttCode.BAD_REQUEST, 'bank code is null')
+    }
+
+    if (!req.body.signature || !req.body.payload) {
+        throw createError(httpSttCode.BAD_REQUEST,
+            'signature or (and) payload is null')
+    }
+
+    const transferInfo = await associateBankService.transfer(bankCode,
+        req.body.payload, req.body.signature)
+
+    res.status(httpSttCode.OK)
+        .json({
+            message: 'success',
+            data: transferInfo
         })
 })
 

@@ -18,7 +18,12 @@ const User = sequelize.define('users', {
     },
     email: {
         type: DataTypes.STRING(255),
-        allowNull: false
+        allowNull: false,
+        unique: true
+    },
+    refresh_token: {
+        type: DataTypes.STRING(255),
+        allowNull: true
     },
     password: {
         type: DataTypes.STRING(255),
