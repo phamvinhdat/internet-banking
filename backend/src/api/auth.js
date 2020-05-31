@@ -1,7 +1,7 @@
 const express = require('express')
-const authService = require('@src/service/auth')
+const authService = require('@be-src/service/auth')
 const httpSttCode = require('http-status-codes')
-const validator = require('@src/validator/auth')
+const validator = require('@be-src/validator/auth')
 const {validationResult} = require('express-validator')
 const createError = require('http-errors')
 

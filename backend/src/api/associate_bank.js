@@ -1,8 +1,8 @@
 const express = require('express')
 const httpSttCode = require('http-status-codes')
-const associateBankService = require("@src/service/associate_bank")
+const associateBankService = require("@be-src/service/associate_bank")
 const createError = require('http-errors')
-const validator = require('@src/validator/associate_bank')
+const validator = require('@be-src/validator/associate_bank')
 
 const router = express.Router()
 

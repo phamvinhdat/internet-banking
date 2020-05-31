@@ -1,5 +1,5 @@
 const jwt = require('jsonwebtoken')
-const config = require('@root/config')
+const config = require('@be-root/config')
 
 
 module.exports = {

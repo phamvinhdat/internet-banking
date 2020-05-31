@@ -1,8 +1,8 @@
-const UserModel = require('@src/model/users')
+const UserModel = require('@be-src/model/users')
 const httpSttCode = require('http-status-codes')
 const createError = require('http-errors')
-const crypto = require('@src/utils/crypto')
-const generator = require('@src/utils/generator')
+const crypto = require('@be-src/utils/crypto')
+const generator = require('@be-src/utils/generator')
 const {v4: uuidv4} = require('uuid');
 
 

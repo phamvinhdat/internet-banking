@@ -1,7 +1,7 @@
-const pgp = require('@src/utils/pgp')
-const crypto = require('@src/utils/crypto')
-const AssociateBankModel = require('@src/model/associate_banks')
-const UserModel = require('@src/model/users')
+const pgp = require('@be-src/utils/pgp')
+const crypto = require('@be-src/utils/crypto')
+const AssociateBankModel = require('@be-src/model/associate_banks')
+const UserModel = require('@be-src/model/users')
 const httpSttCode = require('http-status-codes')
 const createError = require('http-errors')
 

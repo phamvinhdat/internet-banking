@@ -1,11 +1,11 @@
-const UserModel = require('@src/model/users')
+const UserModel = require('@be-src/model/users')
 const httpSttCode = require('http-status-codes')
 const createError = require('http-errors')
-const sequelize = require('@src/model/index')
-const UserRoles = require('@src/model/user_roles')
-const crypto = require('@src/utils/crypto')
-const generator = require('@src/utils/generator')
-const consts = require('@src/consts/index')
+const sequelize = require('@be-src/model/index')
+const UserRoles = require('@be-src/model/user_roles')
+const crypto = require('@be-src/utils/crypto')
+const generator = require('@be-src/utils/generator')
+const consts = require('@be-src/consts/index')
 
 
 module.exports = {

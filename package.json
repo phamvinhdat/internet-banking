@@ -40,8 +40,10 @@
     "store": "^2.0.12"
   },
   "_moduleAliases": {
-    "@root": "./backend",
-    "@src": "./backend/src"
+    "@be-root": "./backend",
+    "@be-src": "./backend/src",
+    "@fe-root": "./frontend",
+    "@fe-src": "./frontend/src"
   },
   "devDependencies": {
     "concurrently": "^5.2.0",
