@@ -10,7 +10,7 @@ module.exports = {
     login: async (username, password) => {
         const errUsernamePassword = createError(httpSttCode.UNAUTHORIZED,
             'username and password do not match any accounts')
-        let user = await UserModel.findOne({email: username})
+        let user = await UserModel.findOne({where: {email: username}})
             .then(u => {
                 if (u === null) {
                     throw errUsernamePassword

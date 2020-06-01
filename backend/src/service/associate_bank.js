@@ -6,7 +6,7 @@ const httpSttCode = require('http-status-codes')
 const createError = require('http-errors')
 
 const decode = async (bankCode, payload, signature) => {
-    const associateBank = await AssociateBankModel.findOne({bank_code: bankCode})
+    const associateBank = await AssociateBankModel.findOne({where: {bank_code: bankCode}})
         .then(ab => {
             if (ab === null) {
                 throw createError(httpSttCode.BAD_REQUEST, 'associate bank not found')
@@ -31,7 +31,7 @@ module.exports = {
             throw createError(httpSttCode.BAD_REQUEST, 'account number is null')
         }
 
-        const user = await UserModel.findOne({account_number: data.account_number})
+        const user = await UserModel.findOne({where: {account_number: data.account_number}})
             .then(u => {
                 if (u === null) {
                     throw createError(httpSttCode.NOT_FOUND, 'user not found')
@@ -54,7 +54,7 @@ module.exports = {
             throw createError(httpSttCode.BAD_REQUEST, 'the value must be a positive value')
         }
 
-        user = await UserModel.findOne({account_number: data.account_number})
+        user = await UserModel.findOne({where: {account_number: data.account_number}})
             .then(u => {
                 if (u === null) {
                     throw createError(httpSttCode.NOT_FOUND, 'user not found')
