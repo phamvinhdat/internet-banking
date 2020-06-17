@@ -1,6 +1,7 @@
 import {message} from "antd";
 import {userConstants} from "../contstant/user";
 import {userService} from "../service/user";
+import history from '../util/history/index'
 
 const login = (username, password) => {
     const request = user => {
@@ -10,12 +11,14 @@ const login = (username, password) => {
 
     const success = user => {
         message.destroy()
-        return {type: userConstants.LOGIN_SUCCESS, user}
+        message.success(user.message)
+        let {data} = user
+        return {type: userConstants.LOGIN_SUCCESS, data}
     }
 
     const failure = err => {
         message.destroy()
-        return {type: userConstants.REGISTER_FAILURE, err}
+        return {type: userConstants.LOGIN_FAILURE, err}
     }
 
     return dispatch => {
@@ -23,6 +26,7 @@ const login = (username, password) => {
         userService.login(username, password)
             .then(user => {
                 dispatch(success(user))
+                history.push('/')
             })
             .catch(err => {
                 dispatch(failure(err.toString()))
@@ -31,6 +35,12 @@ const login = (username, password) => {
     }
 }
 
+const logout = _ => {
+    userService.logout()
+    return {type: userConstants.LOGOUT}
+}
+
 export const userAction = {
     login,
+    logout
 }

@@ -31,4 +31,6 @@ router.post('/register', validator.postRegister(), async (req, res) => {
         })
 })
 
+router.get('/')
+
 module.exports = router

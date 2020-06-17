@@ -59,6 +59,7 @@ module.exports = {
                 if (u === null) {
                     throw createError(httpSttCode.NOT_FOUND, 'user not found')
                 }
+                return u
             })
             .catch(err => {
                 console.error(err)

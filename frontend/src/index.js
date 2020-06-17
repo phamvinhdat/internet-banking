@@ -5,9 +5,12 @@ import {Provider} from 'react-redux'
 import thunk from 'redux-thunk'
 import {hot} from 'react-hot-loader'
 import {createStore, applyMiddleware, compose} from 'redux'
+import {createLogger} from "redux-logger"
 import reducer from './reducer'
 
-const middleware = [thunk]
+const loggerMiddleware = createLogger()
+
+const middleware = [thunk, loggerMiddleware]
 let store = null
 if (process.env.REACT_APP_ENV !== 'production') {
     hot(module)(App)

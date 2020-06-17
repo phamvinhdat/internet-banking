@@ -11,7 +11,7 @@ const login = (username, password) => {
     })
         .then(_handleResponse)
         .then(user => {
-            localStorage.setItem('user', JSON.stringify(user))
+            localStorage.setItem('user', JSON.stringify(user.data))
             return user
         })
         .catch(_handleResponse)
@@ -24,7 +24,6 @@ function logout() {
 
 const _handleResponse = response => {
     const res = response.response || response
-    console.log(res.data)
 
     if (res.status >= 300) {
         if (res.status === httpSttCode.UNAUTHORIZED) {

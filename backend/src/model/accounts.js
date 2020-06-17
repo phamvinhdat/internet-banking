@@ -1,24 +1,25 @@
 const {DataTypes} = require('sequelize');
+const sequelize = require('./index')
 
-const Receiver = sequelize.define('receivers', {
+const Account = sequelize.define('accounts', {
+    id: {
+        type: DataTypes.BIGINT,
+        allowNull: false,
+        primaryKey: true,
+        autoIncrement: true
+    },
     user_id: {
         type: DataTypes.BIGINT,
         allowNull: false,
-        primaryKey: true
     },
-    receiver_account_number: {
+    name: {
         type: DataTypes.STRING(255),
+        allowNull: false
+    },
+    balance: {
+        type: DataTypes.BIGINT,
         allowNull: false,
-        primaryKey: true
-    },
-    receiver_name: {
-        type: DataTypes.STRING(255),
-        allowNull: true
-    },
-    bank_code: {
-        type: DataTypes.STRING(255),
-        allowNull: false,
-        defaultValue: 'YSB'
+        defaultValue: '0'
     },
     create_at: {
         type: DataTypes.DATE,
@@ -35,7 +36,7 @@ const Receiver = sequelize.define('receivers', {
         allowNull: true
     }
 }, {
-    tableName: 'receivers'
+    tableName: 'accounts'
 });
 
-module.exports = Receiver
+module.exports = Account
