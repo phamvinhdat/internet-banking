@@ -26,11 +26,9 @@ router.post('/register', validator.postRegister(), async (req, res) => {
         .json({
             message: 'success',
             data: {
-                user: user,
+                ...user,
             }
         })
 })
-
-router.get('/')
 
 module.exports = router

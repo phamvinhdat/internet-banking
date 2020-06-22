@@ -6,6 +6,7 @@ const UserRoles = require('@be-src/model/user_roles')
 const crypto = require('@be-src/utils/crypto')
 const generator = require('@be-src/utils/generator')
 const consts = require('@be-src/consts/index')
+const AccountModel = require('@be-src/model/accounts')
 
 
 module.exports = {
@@ -35,4 +36,28 @@ module.exports = {
         delete user.password
         return user
     },
+    checkRoleUser: async (userID, roles) => {
+        await UserModel.findOne({where: {id: userID}})
+            .then(u => {
+                if (u === null) {
+                    throw createError(httpSttCode.NOT_FOUND, 'user not exists')
+                }
+            })
+            .catch(err => {
+                throw createError(httpSttCode.INTERNAL_SERVER_ERROR, err)
+            })
+
+        const userRoles = await UserRoles.findAll({where: {user_id: userID}})
+            .catch(err => {
+                throw createError(httpSttCode.INTERNAL_SERVER_ERROR, err)
+            })
+
+        roles.forEach(r => {
+            const found = userRoles.find(ur => ur.role_id === r)
+            if (!found) {
+                throw createError(httpSttCode.NOT_ACCEPTABLE, "access denied")
+            }
+        })
+    },
+
 }
