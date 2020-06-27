@@ -15,4 +15,13 @@ router.get('/', async (req, res) => {
         })
 })
 
+router.post('/', async (req, res) => {
+    const savingAccount = req.body
+    await accountService.createSavingAccount(req.userID, savingAccount.name, savingAccount.balance)
+    res.status(httpSttCode.CREATED)
+        .json({
+            message: `Tạo tài khoản ${savingAccount.name}, tài khoản thanh toán giảm: ${savingAccount.balance}`
+        })
+})
+
 module.exports = router

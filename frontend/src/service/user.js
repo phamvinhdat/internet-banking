@@ -1,6 +1,6 @@
 import axios from "axios";
 import config from "../config";
-import httpSttCode from 'http-status-codes'
+import service from "./index";
 
 axios.defaults.baseURL = config.ROOT_API
 
@@ -9,33 +9,17 @@ const login = (username, password) => {
         username: username,
         password: password
     })
-        .then(_handleResponse)
+        .then(service.handleResponse)
         .then(user => {
             localStorage.setItem('user', JSON.stringify(user.data))
             return user
         })
-        .catch(_handleResponse)
+        .catch(service.handleResponse)
 }
 
 function logout() {
     // remove user from local storage to log user out
     localStorage.removeItem('user');
-}
-
-const _handleResponse = response => {
-    const res = response.response || response
-
-    if (res.status >= 300) {
-        if (res.status === httpSttCode.UNAUTHORIZED) {
-            logout()
-            //location.reload()
-        }
-
-        const err = (res.data && res.data.message) || res.statusText
-        return Promise.reject(err)
-    }
-
-    return Promise.resolve(res.data)
 }
 
 export const userService = {

@@ -17,7 +17,7 @@ module.exports = {
                 throw createError(httpSttCode.INTERNAL_SERVER_ERROR, err)
             })
 
-        const accounts = AccountModel.findAll({where: {user_id: userID}})
+        const accounts = await AccountModel.findAll({where: {user_id: userID}})
             .catch(err => {
                 throw createError(httpSttCode.INTERNAL_SERVER_ERROR, err)
             })
@@ -27,6 +27,7 @@ module.exports = {
             balance: user.balance,
         }
         if (accounts.length > 0) {
+            result.saving_account = []
             accounts.forEach(ac => {
                 result.saving_account.push({
                     name: ac.name,
@@ -44,13 +45,12 @@ module.exports = {
                 if (u === null) {
                     throw createError(httpSttCode.BAD_REQUEST, 'user not found')
                 }
-                return u
             })
             .catch(err => {
                 throw createError(httpSttCode.INTERNAL_SERVER_ERROR, err)
             })
 
-        await AccountModel.create({name: name, balance: balance})
+        await AccountModel.create({name: name, balance: balance, user_id: user_id})
             .catch(err => {
                 throw createError(httpSttCode.INTERNAL_SERVER_ERROR, err)
             })

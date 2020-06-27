@@ -1,26 +1,34 @@
-import Header from "./header";
 import React, {useState} from 'react'
-import {Layout, Menu} from "antd";
+import {Layout, Menu, Button} from "antd";
+import {connect} from 'react-redux'
 import {
-    WalletOutlined
-} from '@ant-design/icons';
+    WalletOutlined,
+    LogoutOutlined,
+} from '@ant-design/icons'
+import Account from '../account/index'
+import {accountAction} from "../../action/account";
+import {userAction} from "../../action/user"
 
-const {Content, Footer, Sider} = Layout;
+const {Content, Footer, Sider, Header} = Layout;
 
 const WALLET_ITEM = 'wallet'
 const ACCOUNT_ITEM = 'account'
+const LOGOUT_ITEM = 'logout'
 
 const Dashboard = props => {
 
-    const [content, setContent] = useState('132')
+    const [content, setContent] = useState(<Account/>)
     const onMenuSelect = obj => {
         const {key} = obj
         switch (key) {
             case WALLET_ITEM:
-                setContent(132)
+                setContent(125)
                 break
             case  ACCOUNT_ITEM:
-                setContent(125)
+                setContent(<Account/>)
+                break
+            case LOGOUT_ITEM:
+                props.logout()
         }
     }
 
@@ -28,14 +36,26 @@ const Dashboard = props => {
         <Layout
             style={{
                 height: '100vh',
-                background: 'rgba(255, 255, 255, 0.2)'
+                background: 'rgba(255, 255, 255, 0.2)',
             }}>
             <Sider
-                collapsible>
+                breakpoint='lg'
+                collapsible
+                style={{
+                    height: '100vh',
+                    width: '100%',
+                    //position: 'fixed',
+                    left: 0,
+                }}>
                 <Menu theme='dark'
                       onSelect={onMenuSelect}
                       mode='inline'
-                      defaultSelectedKeys={[ACCOUNT_ITEM]}>
+                      defaultSelectedKeys={[ACCOUNT_ITEM]}
+                      style={{
+                          height: '100vh',
+                          width: '100%',
+
+                      }}>
                     <div style={{height: '63px'}}/>
                     <Menu.Divider/>
                     <Menu.Item
@@ -52,10 +72,17 @@ const Dashboard = props => {
                         Thông tin tài khoản
                     </Menu.Item>
                     <Menu.Divider/>
+                    <Menu.Item
+                        key={LOGOUT_ITEM}
+                        icon={<LogoutOutlined/>}
+                        style={{margin: 1}}>
+                        Đăng xuất
+                    </Menu.Item>
+                    <Menu.Divider/>
                 </Menu>
             </Sider>
             <Layout>
-                <Layout.Header
+                <Header
                     className='text-center'
                     style={{
                         color: '#fff',
@@ -63,11 +90,11 @@ const Dashboard = props => {
                         fontFamily: 'Bungee Shade',
                     }}>
                     Yasuo bank
-                </Layout.Header>
+                </Header>
                 <Content
                     style={{
                         margin: '24px 16px 0',
-                        backgroundColor: '#fff'
+                        backgroundColor: '#fff',
                     }}>
                     {content}
                 </Content>
@@ -80,4 +107,17 @@ const Dashboard = props => {
     )
 }
 
-export default Dashboard
+const mapStateToProps = state => {
+    return {
+        account: state.account
+    }
+}
+
+const mapDispatchToProps = dispatch => {
+    return {
+        logout: _ => dispatch(userAction.logout()),
+        getAccount: _ => dispatch(accountAction.getAccounts())
+    }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(Dashboard)
