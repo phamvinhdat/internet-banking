@@ -65,7 +65,41 @@ const createSavingAccount = (name, balance) => {
     }
 }
 
+const delSavingAccount = savingAccountID => {
+    message.loading('Vui lòng chờ ...', 0)
+    return dispatch => {
+        accountService.delSavingAccount(savingAccountID)
+            .then(account => {
+                message.destroy()
+                message.success(account.message)
+                dispatch(getAccounts())
+            })
+            .catch(err => {
+                message.destroy()
+                message.error(err.toString())
+            })
+    }
+}
+
+const updateSavingAccount = (savingAccountID, name, deltaBalance) => {
+    message.loading('Vui lòng chờ ...', 0)
+    return dispatch => {
+        accountService.updateSavingAccount(savingAccountID, name, deltaBalance)
+            .then(account => {
+                message.destroy()
+                message.success(account.message)
+                dispatch(getAccounts())
+            })
+            .catch(err => {
+                message.destroy()
+                message.error(err.toString())
+            })
+    }
+}
+
 export const accountAction = {
     getAccounts,
     createSavingAccount,
+    updateSavingAccount,
+    delSavingAccount,
 }

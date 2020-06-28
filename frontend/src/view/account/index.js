@@ -1,9 +1,10 @@
-import {Row, Card, Statistic, Col, Button, Tooltip} from "antd";
+import {Row, Card, Statistic, Col, Popover, Button, Tooltip} from "antd";
 import CreateSavingAccount from "./createsavingaccount";
 import React, {useEffect, useState} from 'react'
 import {connect} from "react-redux";
 import {accountAction} from '../../action/account'
 import {PlusOutlined} from '@ant-design/icons'
+import PopoverSavingAccount from "./popoversavingaccount";
 
 const style = {
     grid: {
@@ -49,22 +50,26 @@ const Account = props => {
         return <Card title='Tài khoản tiết kiệm'
                      style={style.card}
                      hoverable>
-            {savingAccount.map((account, index) => (
-                <Card.Grid style={style.grid}
-                           key={index}
-                           hoverable>
-                    <Statistic
-                        title='Tên'
-                        groupSeparator=''
-                        value={account.name}
-                    />
-                    <Statistic
-                        title='Số dư'
-                        valueStyle={{color: '#3f8600'}}
-                        value={account.balance}
-                        suffix='₫'
-                    />
-                </Card.Grid>
+            {savingAccount.map((account) => (
+                <Popover content={
+                    <PopoverSavingAccount savingAccountID={account.id}/>}
+                         key={account.id}
+                         trigger='hover'>
+                    <Card.Grid style={style.grid}
+                               hoverable>
+                        <Statistic
+                            title='Tên'
+                            groupSeparator=''
+                            value={account.name}
+                        />
+                        <Statistic
+                            title='Số dư'
+                            valueStyle={{color: '#3f8600'}}
+                            value={account.balance}
+                            suffix='₫'
+                        />
+                    </Card.Grid>
+                </Popover>
             ))}
             <Card.Grid style={style.grid}>
                 <Tooltip title='Thêm tài khoản tiết kiệm'>

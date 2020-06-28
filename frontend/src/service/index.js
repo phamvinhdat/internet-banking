@@ -1,6 +1,7 @@
 import utils from "../util";
 import httpSttCode from "http-status-codes";
 import {userService} from './user'
+import history from "../util/history";
 
 const bearerHeader = _ => {
     return {
@@ -14,7 +15,7 @@ const handleResponse = response => {
     if (res.status >= 300) {
         if (res.status === httpSttCode.UNAUTHORIZED) {
             userService.logout()
-            //location.reload()
+            history.push('/login')
         }
 
         const err = (res.data && res.data.message) || res.statusText

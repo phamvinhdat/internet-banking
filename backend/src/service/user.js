@@ -6,8 +6,6 @@ const UserRoles = require('@be-src/model/user_roles')
 const crypto = require('@be-src/utils/crypto')
 const generator = require('@be-src/utils/generator')
 const consts = require('@be-src/consts/index')
-const AccountModel = require('@be-src/model/accounts')
-
 
 module.exports = {
     createUser: async (user, roles) => {

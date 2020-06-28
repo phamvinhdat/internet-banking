@@ -19,7 +19,7 @@ CREATE TABLE IF NOT EXISTS `accounts`(
   `delete_at`      TIMESTAMP NULL DEFAULT NULL,
   PRIMARY KEY (`id`),
   KEY `accounts_index` (`delete_at`)
-)ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;accounts
+)ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 CREATE TABLE IF NOT EXISTS `users`(
   `id`             BIGINT(20) NOT NULL AUTO_INCREMENT,
