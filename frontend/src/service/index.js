@@ -2,8 +2,10 @@ import utils from "../util";
 import httpSttCode from "http-status-codes";
 import {userService} from './user'
 
-const bearerHeader = {
-    headers: {Authorization: `Bearer ${utils.getToken()}`}
+const bearerHeader = _ => {
+    return {
+        headers: {Authorization: `Bearer ${utils.getToken()}`}
+    }
 }
 
 const handleResponse = response => {

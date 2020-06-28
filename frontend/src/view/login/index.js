@@ -31,7 +31,15 @@ const Login = props => {
     return (
         <Row justify='center' align='middle' className='full-screen'>
             <Card
-                title='Yasuo Bank'
+                title={
+                    <span
+                        style={{
+                            fontSize:'20px',
+                            fontFamily: 'Bungee Shade'
+                        }}>
+                        Yasuo bank
+                    </span>
+                }
                 tabList={tabList}
                 hoverable
                 headStyle={{textAlign: 'center'}}

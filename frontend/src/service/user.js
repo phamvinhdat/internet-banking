@@ -1,6 +1,7 @@
 import axios from "axios";
 import config from "../config";
 import service from "./index";
+import store from 'store'
 
 axios.defaults.baseURL = config.ROOT_API
 
@@ -11,7 +12,7 @@ const login = (username, password) => {
     })
         .then(service.handleResponse)
         .then(user => {
-            localStorage.setItem('user', JSON.stringify(user.data))
+            store.set('user', user.data)
             return user
         })
         .catch(service.handleResponse)
@@ -19,7 +20,7 @@ const login = (username, password) => {
 
 function logout() {
     // remove user from local storage to log user out
-    localStorage.removeItem('user');
+    store.clearAll()
 }
 
 export const userService = {
