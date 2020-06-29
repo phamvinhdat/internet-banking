@@ -4,7 +4,7 @@ import React, {useEffect, useState} from 'react'
 import {connect} from "react-redux";
 import {accountAction} from '../../action/account'
 import {PlusOutlined} from '@ant-design/icons'
-import PopoverSavingAccount from "./popoversavingaccount";
+import SavingAccount from "./savingaccount";
 
 const style = {
     grid: {
@@ -50,27 +50,9 @@ const Account = props => {
         return <Card title='Tài khoản tiết kiệm'
                      style={style.card}
                      hoverable>
-            {savingAccount.map((account) => (
-                <Popover content={
-                    <PopoverSavingAccount savingAccountID={account.id}/>}
-                         key={account.id}
-                         trigger='hover'>
-                    <Card.Grid style={style.grid}
-                               hoverable>
-                        <Statistic
-                            title='Tên'
-                            groupSeparator=''
-                            value={account.name}
-                        />
-                        <Statistic
-                            title='Số dư'
-                            valueStyle={{color: '#3f8600'}}
-                            value={account.balance}
-                            suffix='₫'
-                        />
-                    </Card.Grid>
-                </Popover>
-            ))}
+            {savingAccount.map((_, index) => {
+                return <SavingAccount key={index} index={index}/>
+            })}
             <Card.Grid style={style.grid}>
                 <Tooltip title='Thêm tài khoản tiết kiệm'>
                     <Button style={style.addBtn}
