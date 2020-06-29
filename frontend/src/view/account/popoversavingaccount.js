@@ -20,6 +20,7 @@ const PopoverSavingAccount = props => {
 
     const onBtnUpdateClick = _ => {
         props.setHoverVisible(false)
+        form.resetFields()
         setVisibleUpdatingModal(true)
     }
 

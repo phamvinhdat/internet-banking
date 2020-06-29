@@ -4,15 +4,17 @@ import {connect} from 'react-redux'
 import {
     WalletOutlined,
     LogoutOutlined,
+    BankOutlined,
 } from '@ant-design/icons'
 import Account from '../account/index'
 import {accountAction} from "../../action/account";
 import {userAction} from "../../action/user"
+import Service from "../service/index";
 
 const {Content, Footer, Sider, Header} = Layout;
 
 const WALLET_ITEM = 'wallet'
-const ACCOUNT_ITEM = 'account'
+const SERVICE_ITEM = 'service'
 const LOGOUT_ITEM = 'logout'
 
 const Dashboard = props => {
@@ -22,10 +24,10 @@ const Dashboard = props => {
         const {key} = obj
         switch (key) {
             case WALLET_ITEM:
-                setContent(125)
-                break
-            case  ACCOUNT_ITEM:
                 setContent(<Account/>)
+                break
+            case  SERVICE_ITEM:
+                setContent(<Service/>)
                 break
             case LOGOUT_ITEM:
                 props.logout()
@@ -50,7 +52,7 @@ const Dashboard = props => {
                 <Menu theme='dark'
                       onSelect={onMenuSelect}
                       mode='inline'
-                      defaultSelectedKeys={[ACCOUNT_ITEM]}
+                      defaultSelectedKeys={[WALLET_ITEM]}
                       style={{
                           height: '100vh',
                           width: '100%',
@@ -59,17 +61,17 @@ const Dashboard = props => {
                     <div style={{height: '63px'}}/>
                     <Menu.Divider/>
                     <Menu.Item
-                        key={ACCOUNT_ITEM}
+                        key={WALLET_ITEM}
                         icon={<WalletOutlined/>}
                         style={{margin: 1}}>
                         Thông tin tài khoản
                     </Menu.Item>
                     <Menu.Divider/>
                     <Menu.Item
-                        key={WALLET_ITEM}
-                        icon={<WalletOutlined/>}
+                        key={SERVICE_ITEM}
+                        icon={<BankOutlined/>}
                         style={{margin: 1}}>
-                        Thông tin tài khoản
+                        Tiện ích
                     </Menu.Item>
                     <Menu.Divider/>
                     <Menu.Item
