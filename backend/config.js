@@ -6,7 +6,8 @@ const dev = {
     },
     DATABASE: {
         URL: 'mysql://root:root@localhost:3306/yasuobank'
-    }
+    },
+    MOVE_MONEY_FEE: 5
 }
 
 const prod = {

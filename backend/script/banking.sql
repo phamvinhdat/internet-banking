@@ -5,9 +5,21 @@ DROP TABLE IF EXISTS `associate_banks`;
 DROP TABLE IF EXISTS `users`;
 DROP TABLE IF EXISTS `user_roles`;
 DROP TABLE IF EXISTS `roles`;
-DROP TABLE IF EXISTS `receivers`;
 DROP TABLE IF EXISTS `transactions`;
 DROP TABLE IF EXISTS `accounts`;
+DROP TABLE IF EXISTS `friends`;
+
+CREATE TABLE IF NOT EXISTS `friends`(
+  `user_id`               BIGINT(20) NOT NULL,
+  `friend_account_number` VARCHAR(255) NOT NULL,
+  `bank_code`             VARCHAR(255) NOT NULL DEFAULT 'YSB',
+  `friend_name`           VARCHAR(255) NOT NULL,
+  `create_at`             TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  `update_at`             TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  `delete_at`             TIMESTAMP NULL DEFAULT NULL,
+  PRIMARY KEY (`user_id`, `friend_account_number`),
+  KEY `friends_index` (`delete_at`)
+)ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 CREATE TABLE IF NOT EXISTS `accounts`(
   `id`             BIGINT(20) NOT NULL AUTO_INCREMENT,
@@ -71,27 +83,14 @@ CREATE TABLE IF NOT EXISTS `associate_banks`(
   KEY `associate_bank_index` (`delete_at`)
 )ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
--- save receiver of user
-CREATE TABLE IF NOT EXISTS `receivers`(
-  `user_id`                 BIGINT(20) NOT NULL,
-  `receiver_account_number` VARCHAR(255) NOT NULL,
-  `receiver_name`           VARCHAR(255),
-  `bank_code`               VARCHAR(255) NOT NULL DEFAULT 'YSB',
-  `create_at`               TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-  `update_at`               TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-  `delete_at`               TIMESTAMP NULL DEFAULT NULL,
-  PRIMARY KEY (`user_id`, `receiver_account_number`),
-  KEY `receivers_index` (`delete_at`)
-)ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
-
 CREATE TABLE IF NOT EXISTS `transactions`(
   `id`                      BIGINT(20) NOT NULL AUTO_INCREMENT,
   `receiver_account_number` VARCHAR(255) NOT NULL,
-  `receiver_name`           VARCHAR(255),
   `receiver_bank_code`      VARCHAR(255) NOT NULL DEFAULT 'YSB',
   `sender_account_number`   VARCHAR(255) NOT NULL,
-  `sender_name`             VARCHAR(255),
   `sender_bank_code`        VARCHAR(255) NOT NULL DEFAULT 'YSB',
+  
+  `amount`                  BIGINT(20) NOT NULL DEFAULT 0,
   `message`                 VARCHAR(255),
   `create_at`               TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
   `update_at`               TIMESTAMP DEFAULT CURRENT_TIMESTAMP,

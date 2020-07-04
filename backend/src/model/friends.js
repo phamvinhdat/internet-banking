@@ -1,19 +1,20 @@
 const {DataTypes} = require('sequelize');
+const sequelize = require('./index')
 
-const Receiver = sequelize.define('receivers', {
+const Friend = sequelize.define('friends', {
     user_id: {
         type: DataTypes.BIGINT,
         allowNull: false,
-        primaryKey: true
+        primaryKey: true,
     },
-    receiver_account_number: {
+    friend_account_number: {
         type: DataTypes.STRING(255),
         allowNull: false,
-        primaryKey: true
+        primaryKey: true,
     },
-    receiver_name: {
+    friend_name: {
         type: DataTypes.STRING(255),
-        allowNull: true
+        allowNull: false
     },
     bank_code: {
         type: DataTypes.STRING(255),
@@ -35,7 +36,7 @@ const Receiver = sequelize.define('receivers', {
         allowNull: true
     }
 }, {
-    tableName: 'receivers'
+    tableName: 'friends'
 });
 
-module.exports = Receiver
+module.exports = Friend

@@ -1,5 +1,5 @@
-import {Form, Input, Select, InputNumber, Checkbox} from "antd";
-import React from 'react'
+import {Form, Input, Select, InputNumber, Checkbox, Button} from "antd";
+import React, {useState} from 'react'
 import {connect} from 'react-redux'
 
 const formItemLayout = {
@@ -43,10 +43,8 @@ const MoveMoney = props => {
             </Item>
             <Item name='bankCode'
                   label='Mã ngân hàng'>
-                <Select>
-                    <Option value="1">Option 1</Option>
-                    <Option value="2">Option 2</Option>
-                    <Option value="3">Option 3</Option>
+                <Select defaultValue='YSB'>
+                    <Option value="YSB">YSB - Yasuo bank</Option>
                 </Select>
             </Item>
             <Item name='accountNumber'
@@ -59,44 +57,41 @@ const MoveMoney = props => {
                   ]}>
                 <Input/>
             </Item>
-            <Item label='Số tiền' style={{marginBottom: 0}}>
-                <Item name='amount'
-                      initialValue={0}
-                      rules={[
-                          {
-                              required: true,
-                              message: 'Số tiền không được bỏ trống'
-                          },
-                          {
-                              type: 'number',
-                              message: 'Vui lòng nhập số, không nhập chữ',
-                          },
-                      ]}
-                      style={{
-                          display: 'inline-block',
-                          width: 'calc(40% - 12px)'
-                      }}>
-                    <InputNumber step={10000}
-                                 parser={inputNumberParser}
-                                 formatter={inputNumberFormatter}
-                                 max={props.account.balance}
-                                 min={10000}
-                                 style={{width: '150px'}}/>
-                </Item>
-                <Item name='recipientCharge'
-                      label='Người nhận chịu phí'
-                      style={{
-                          display: 'inline-block',
-                          width: 'calc(60% - 12px)'
-                      }}>
-                    <Checkbox/>
-                </Item>
+            <Item name='amount'
+                  label='Số tiền'
+                  initialValue={0}
+                  rules={[
+                      {
+                          required: true,
+                          message: 'Số tiền không được bỏ trống'
+                      },
+                      {
+                          type: 'number',
+                          message: 'Vui lòng nhập số, không nhập chữ',
+                      },
+                  ]}>
+                <InputNumber step={10000}
+                             parser={inputNumberParser}
+                             formatter={inputNumberFormatter}
+                             max={props.account.balance}
+                             min={10000}
+                             style={{width: '150px'}}/>
+            </Item>
+            <Item name='recipientCharge'
+                  label='Người nhận chịu phí'>
+                <Checkbox/>
             </Item>
             <Item name='message'
                   label='Lời nhắn'>
                 <Input
                     placeholder='Gửi lời nhắn đến người nhận (không bắt buôc)'/>
             </Item>
+            <Form.Item {...tailFormItemLayout}>
+                <Button type="primary"
+                        htmlType="submit">
+                    Gửi
+                </Button>
+            </Form.Item>
         </Form>
     )
 }

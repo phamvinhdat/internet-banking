@@ -76,9 +76,8 @@ module.exports = {
                         transaction: t,
                     })
                 })
-                .catch(err => {
-                    throw createError(httpSttCode.INTERNAL_SERVER_ERROR, err)
-                })
+        }).catch(err => {
+            throw createError(httpSttCode.INTERNAL_SERVER_ERROR, err)
         })
     },
 
@@ -115,16 +114,14 @@ module.exports = {
                 where: {
                     id: userID,
                 }
+            }).then(_ => {
+                return AccountModel.destroy({
+                    where: {id: id},
+                    transaction: t,
+                })
             })
-                .then(_ => {
-                    return AccountModel.destroy({
-                        where: {id: id},
-                        transaction: t,
-                    })
-                })
-                .catch(err => {
-                    throw createError(httpSttCode.INTERNAL_SERVER_ERROR, err)
-                })
+        }).catch(err => {
+            throw createError(httpSttCode.INTERNAL_SERVER_ERROR, err)
         })
     },
 
@@ -165,25 +162,23 @@ module.exports = {
 
         await sequelize.transaction(t => {
             const newBalance = user.balance - deltaSavingBalance
-            const newSavingBalance = savingAccount.balance + deltaSavingBalance
             return UserModel.update({balance: newBalance}, {
                 transaction: t,
                 where: {
                     id: userID,
                 }
+            }).then(_ => {
+                const newSavingBalance = savingAccount.balance + deltaSavingBalance
+                return AccountModel.update({
+                    name: name,
+                    balance: newSavingBalance,
+                }, {
+                    where: {id: id},
+                    transaction: t,
+                })
             })
-                .then(_ => {
-                    return AccountModel.update({
-                        name: name,
-                        balance: newSavingBalance,
-                    }, {
-                        where: {id: id},
-                        transaction: t,
-                    })
-                })
-                .catch(err => {
-                    throw createError(httpSttCode.INTERNAL_SERVER_ERROR, err)
-                })
+        }).catch(err => {
+            throw createError(httpSttCode.INTERNAL_SERVER_ERROR, err)
         })
-    }
+    },
 }
