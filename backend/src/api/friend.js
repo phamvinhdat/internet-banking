@@ -15,7 +15,7 @@ router.post('/', async (req, res) => {
 })
 
 router.get('/', async (req, res) => {
-    const friends = await friendService.getFriend(req.userID)
+    const friends = await friendService.getFriends(req.userID)
     res.status(httpSttCode.OK)
         .json({
             message: 'Lấy thông tin thành công',

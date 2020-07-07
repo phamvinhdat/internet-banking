@@ -4,6 +4,8 @@ const httpSttCode = require('http-status-codes')
 
 const router = express.Router()
 
+const accountNumberParam = 'accountNumber'
+
 router.get('/', async (req, res) => {
     const accounts = await accountService.getAccount(req.userID)
     res.status(httpSttCode.OK)
@@ -11,6 +13,18 @@ router.get('/', async (req, res) => {
             message: 'success',
             data: {
                 ...accounts
+            }
+        })
+})
+
+router.get(`/:${accountNumberParam}/info`, async (req, res) => {
+    const accountNumber = req.params[accountNumberParam]
+    const accountInfo = await accountService.getAccountInfo(req.userID, accountNumber)
+    res.status(httpSttCode.OK)
+        .json({
+            message: 'Lấy thông tin tài khoản thành công',
+            data: {
+                ...accountInfo
             }
         })
 })

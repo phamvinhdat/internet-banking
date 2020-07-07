@@ -31,6 +31,12 @@ const {Option} = Select
 const inputNumberParser = value => value.replace('₫', '')
 const inputNumberFormatter = value => `${value}₫`
 
+const accountNumberOnchange = e => {
+    const value = e.target.value
+    if (value.length > 5) {
+        console.log(value)
+    }
+}
 const MoveMoney = props => {
     const [form] = Form.useForm()
 
@@ -42,8 +48,9 @@ const MoveMoney = props => {
                 <Input disabled/>
             </Item>
             <Item name='bankCode'
+                  initialValue='YSB'
                   label='Mã ngân hàng'>
-                <Select defaultValue='YSB'>
+                <Select>
                     <Option value="YSB">YSB - Yasuo bank</Option>
                 </Select>
             </Item>
@@ -55,7 +62,8 @@ const MoveMoney = props => {
                           message: 'Số tài khoản người nhận không được bỏ trống'
                       }
                   ]}>
-                <Input/>
+                <Input onChange={accountNumberOnchange}
+                       allowClear/>
             </Item>
             <Item name='amount'
                   label='Số tiền'
@@ -78,13 +86,14 @@ const MoveMoney = props => {
                              style={{width: '150px'}}/>
             </Item>
             <Item name='recipientCharge'
+                  valuePropName='checked'
                   label='Người nhận chịu phí'>
                 <Checkbox/>
             </Item>
             <Item name='message'
                   label='Lời nhắn'>
-                <Input
-                    placeholder='Gửi lời nhắn đến người nhận (không bắt buôc)'/>
+                <Input allowClear
+                       placeholder='Gửi lời nhắn đến người nhận (không bắt buôc)'/>
             </Item>
             <Form.Item {...tailFormItemLayout}>
                 <Button type="primary"
@@ -102,4 +111,10 @@ const mapStateToProps = state => {
     }
 }
 
-export default connect(mapStateToProps)(MoveMoney)
+const mapDispatchToProps = dispatch => {
+    return {
+
+    }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(MoveMoney)

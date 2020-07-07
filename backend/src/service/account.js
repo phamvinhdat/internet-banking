@@ -3,6 +3,7 @@ const UserModel = require('@be-src/model/users')
 const createError = require('http-errors')
 const httpSttCode = require('http-status-codes')
 const sequelize = require('@be-src/model/index')
+const utilsService = require('./utils')
 
 module.exports = {
     getAccount: async (userID) => {
@@ -35,6 +36,41 @@ module.exports = {
                     balance: ac.balance
                 })
             })
+        }
+
+        return result
+    },
+
+    getAccountInfo: async (userID, accountNumber) => {
+        let result = null
+        await AccountModel.findOne({
+            where: {
+                user_id: userID,
+                friend_account_number: accountNumber,
+            }
+        }).then(friend => {
+            if (friend == null) {
+                return
+            }
+
+            result = {
+                name: friend.friend_name,
+                bank_code: friend.bank_code,
+            }
+        }).catch(err => {
+            throw createError(httpSttCode.INTERNAL_SERVER_ERROR, err)
+        })
+
+        if (result === null) {
+            const user = await utilsService.getUserByCondition(
+                {account_number: accountNumber},
+                'Không tìm thấy thông tin tài khoản'
+            )
+
+            result = {
+                name: user.name,
+                bank_code: user.bank_code,
+            }
         }
 
         return result

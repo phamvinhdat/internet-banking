@@ -4,7 +4,7 @@ const FriendModel = require('@be-src/model/friends')
 const utilsService = require('@be-src/service/utils')
 
 module.exports = {
-    getFriend: async userID => {
+    getFriends: async userID => {
         const friends = await FriendModel.findAll({
             where: {
                 user_id: userID,
