@@ -7,6 +7,13 @@ const getAccount = _ => {
         .catch(service.handleResponse)
 }
 
+const getAccountInfo = accountNumber => {
+    const url = `/account/${accountNumber}/info`
+    return axios.get(url, service.bearerHeader())
+        .then(service.handleResponse)
+        .catch(service.handleResponse)
+}
+
 const createSavingAccount = (name, balance) => {
     return axios.post('/account', {
         name: name,
@@ -37,4 +44,5 @@ export const accountService = {
     createSavingAccount,
     delSavingAccount,
     updateSavingAccount,
+    getAccountInfo,
 }

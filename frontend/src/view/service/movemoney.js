@@ -1,6 +1,8 @@
 import {Form, Input, Select, InputNumber, Checkbox, Button} from "antd";
+import {accountService} from "../../service/account";
 import React, {useState} from 'react'
 import {connect} from 'react-redux'
+import {transactionAction} from "../../action/transaction"
 
 const formItemLayout = {
     labelCol: {
@@ -31,19 +33,55 @@ const {Option} = Select
 const inputNumberParser = value => value.replace('₫', '')
 const inputNumberFormatter = value => `${value}₫`
 
-const accountNumberOnchange = e => {
-    const value = e.target.value
-    if (value.length > 5) {
-        console.log(value)
-    }
-}
 const MoveMoney = props => {
     const [form] = Form.useForm()
+    const [isValid, setIsValid] = useState(false)
+    let delayTimer
+
+    const accountNumberOnchange = e => {
+        const value = e.target.value
+        if (value.length < 5) {
+            return
+        }
+        clearTimeout(delayTimer)
+        delayTimer = setTimeout(_ => {
+            accountService.getAccountInfo(value)
+                .then(res => {
+                    const userInfo = res.data
+                    form.setFieldsValue({
+                        name: userInfo.name,
+                    })
+                    setIsValid(true)
+                })
+                .catch(_ => {
+                    form.setFieldsValue({
+                        name: '',
+                    })
+                    setIsValid(false)
+                })
+        }, 500)
+    }
+
+    const onFinish = value => {
+        const transaction = {
+            receiver_account_number: value.accountNumber,
+            receiver_bank_code: value.bankCode,
+            sender_account_number: props.account.account_number,
+            sender_bank_code: 'YSB',
+            amount: value.amount,
+            message: value.message
+        }
+
+        props.createTransaction(transaction, value.recipientCharge)
+    }
 
     return (
         <Form form={form}
+              scrollToFirstError={true}
+              onFinish={onFinish}
               {...formItemLayout}>
             <Item name='name'
+                  initialValue={props.accountInfo.name}
                   label='Tên người nhận'>
                 <Input disabled/>
             </Item>
@@ -77,6 +115,15 @@ const MoveMoney = props => {
                           type: 'number',
                           message: 'Vui lòng nhập số, không nhập chữ',
                       },
+                      {
+                          validator(_, value) {
+                              if (value >= 10000) {
+                                  return Promise.resolve()
+                              }
+
+                              return Promise.reject('Số tiền chuyển khoản phải lớn hơn 10 000₫')
+                          }
+                      }
                   ]}>
                 <InputNumber step={10000}
                              parser={inputNumberParser}
@@ -97,6 +144,7 @@ const MoveMoney = props => {
             </Item>
             <Form.Item {...tailFormItemLayout}>
                 <Button type="primary"
+                        disabled={!isValid}
                         htmlType="submit">
                     Gửi
                 </Button>
@@ -108,12 +156,15 @@ const MoveMoney = props => {
 const mapStateToProps = state => {
     return {
         account: state.account,
+        accountInfo: state.accountInfo,
     }
 }
 
 const mapDispatchToProps = dispatch => {
     return {
-
+        createTransaction: (transaction, recipientCharge, saveRecipient) =>
+            dispatch(transactionAction.createTransaction(transaction, recipientCharge,
+                saveRecipient))
     }
 }
 

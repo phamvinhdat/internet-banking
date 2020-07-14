@@ -14,7 +14,7 @@ const middleware = [thunk, loggerMiddleware]
 let store = null
 if (process.env.REACT_APP_ENV !== 'production') {
     hot(module)(App)
-    const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose
+    const composeEnhancers = compose
     const enhancer = composeEnhancers(
         applyMiddleware(...middleware)
     )

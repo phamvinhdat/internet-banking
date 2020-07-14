@@ -1,5 +1,6 @@
 const AccountModel = require('@be-src/model/accounts')
 const UserModel = require('@be-src/model/users')
+const FriendModel = require('@be-src/model/friends')
 const createError = require('http-errors')
 const httpSttCode = require('http-status-codes')
 const sequelize = require('@be-src/model/index')
@@ -43,7 +44,7 @@ module.exports = {
 
     getAccountInfo: async (userID, accountNumber) => {
         let result = null
-        await AccountModel.findOne({
+        await FriendModel.findOne({
             where: {
                 user_id: userID,
                 friend_account_number: accountNumber,
