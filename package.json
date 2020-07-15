@@ -12,7 +12,7 @@
   "author": "datpv hungtq",
   "license": "ISC",
   "dependencies": {
-    "antd": "^4.4.1",
+    "antd": "^4.4.2",
     "axios": "^0.19.2",
     "bcrypt": "^4.0.1",
     "cors": "^2.8.5",
@@ -28,7 +28,7 @@
     "morgan": "^1.10.0",
     "mysql2": "^2.1.0",
     "node-sass": "^4.14.1",
-    "openpgp": "^4.10.4",
+    "openpgp": "^4.10.6",
     "react": "^16.13.1",
     "react-dom": "^16.13.1",
     "react-hot-loader": "^4.12.21",
