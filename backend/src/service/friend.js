@@ -52,5 +52,16 @@ module.exports = {
         }).catch(err => {
             throw createError(httpSttCode.INTERNAL_SERVER_ERROR, err)
         })
+    },
+
+    deleteFriend: async (userID, friendAccountNumber) => {
+        await FriendModel.destroy({
+            where: {
+                friend_account_number: friendAccountNumber,
+                user_id: userID,
+            }
+        }).catch(err => {
+            throw createError(httpSttCode.INTERNAL_SERVER_ERROR, err)
+        })
     }
 }

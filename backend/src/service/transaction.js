@@ -28,9 +28,10 @@ const moveMoneyYSBBank = async (transaction, sender, recipient, recipientCharge)
         transaction: t,
         where: {id: sender.id}
     }).then(_ => {
-        const newBalance = recipient.balance + recipientCharge ?
+        const newBalance = recipient.balance + (recipientCharge ?
             transaction.amount - moveMoneyFee(transaction.amount) :
-            transaction.amount
+            transaction.amount)
+        console.log(newBalance, recipient.balance, transaction.amount, "hihi")
         return UserModel.update({
             balance: newBalance
         }, {
@@ -42,11 +43,11 @@ const moveMoneyYSBBank = async (transaction, sender, recipient, recipientCharge)
     })
 }
 
-const moveMoney = async (transaction, sender, recipientCharge) => {
+const moveMoney = async (transaction, sender, recipient, recipientCharge) => {
 
     switch (transaction.receiver_bank_code) {
         case 'YSB':
-            await moveMoneyYSBBank(transaction, sender, recipientCharge)
+            await moveMoneyYSBBank(transaction, sender, recipient, recipientCharge)
     }
 }
 
@@ -66,6 +67,6 @@ module.exports = {
                 recipient.bank_code)
         }
 
-        await moveMoney(transaction, sender, recipientCharge)
+        await moveMoney(transaction, sender, recipient, recipientCharge)
     }
 }

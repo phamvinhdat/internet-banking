@@ -1,7 +1,8 @@
 import React from 'react'
 import {Button, Tabs} from "antd"
 import {SendOutlined, SaveOutlined} from '@ant-design/icons'
-import MoveMoney from "./movemoney";
+import MoveMoney from "./movemoney"
+import FriendList from "./friendlist";
 
 const {TabPane} = Tabs
 const MOVE_MONEY = 'MOVE_MONEY'
@@ -19,8 +20,9 @@ const Service = props => {
                 <MoveMoney/>
             </TabPane>
             <TabPane tab={<span>Danh sách gợi nhớ <SaveOutlined/></span>}
-                     key={MOVE_MONEY_LIST}/>
-
+                     key={MOVE_MONEY_LIST}>
+                <FriendList/>
+            </TabPane>
         </Tabs>
     )
 }

@@ -2,7 +2,7 @@ import axios from 'axios'
 import service from "./index"
 
 const createTransaction = (transaction, recipientCharge, saveRecipient) => {
-    return axios.post('/', {
+    return axios.post('/transaction', {
         transaction: transaction,
         recipient_charge: recipientCharge,
         save_recipient: saveRecipient,

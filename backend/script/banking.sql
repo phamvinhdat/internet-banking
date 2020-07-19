@@ -10,6 +10,7 @@ DROP TABLE IF EXISTS `accounts`;
 DROP TABLE IF EXISTS `friends`;
 
 CREATE TABLE IF NOT EXISTS `friends`(
+  `id`             BIGINT(20) NOT NULL AUTO_INCREMENT,
   `user_id`               BIGINT(20) NOT NULL,
   `friend_account_number` VARCHAR(255) NOT NULL,
   `bank_code`             VARCHAR(255) NOT NULL DEFAULT 'YSB',
@@ -17,7 +18,7 @@ CREATE TABLE IF NOT EXISTS `friends`(
   `create_at`             TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
   `update_at`             TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
   `delete_at`             TIMESTAMP NULL DEFAULT NULL,
-  PRIMARY KEY (`user_id`, `friend_account_number`),
+  PRIMARY KEY (`id`),
   KEY `friends_index` (`delete_at`)
 )ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
@@ -89,7 +90,6 @@ CREATE TABLE IF NOT EXISTS `transactions`(
   `receiver_bank_code`      VARCHAR(255) NOT NULL DEFAULT 'YSB',
   `sender_account_number`   VARCHAR(255) NOT NULL,
   `sender_bank_code`        VARCHAR(255) NOT NULL DEFAULT 'YSB',
-  
   `amount`                  BIGINT(20) NOT NULL DEFAULT 0,
   `message`                 VARCHAR(255),
   `create_at`               TIMESTAMP DEFAULT CURRENT_TIMESTAMP,

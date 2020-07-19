@@ -1,8 +1,17 @@
-import {Form, Input, Select, InputNumber, Checkbox, Button} from "antd";
+import {
+    Form,
+    Input,
+    AutoComplete,
+    Select,
+    InputNumber,
+    Checkbox,
+    Button
+} from "antd";
 import {accountService} from "../../service/account";
-import React, {useState} from 'react'
+import React, {useState, useEffect} from 'react'
 import {connect} from 'react-redux'
 import {transactionAction} from "../../action/transaction"
+import {friendAction} from "../../action/friend";
 
 const formItemLayout = {
     labelCol: {
@@ -38,11 +47,15 @@ const MoveMoney = props => {
     const [isValid, setIsValid] = useState(false)
     let delayTimer
 
-    const accountNumberOnchange = e => {
-        const value = e.target.value
-        if (value.length < 5) {
+    useEffect(_ => {
+        props.getFriend()
+    }, [])
+
+    const accountNumberOnchange = value => {
+        if (!value || value.length < 5) {
             return
         }
+
         clearTimeout(delayTimer)
         delayTimer = setTimeout(_ => {
             accountService.getAccountInfo(value)
@@ -72,7 +85,25 @@ const MoveMoney = props => {
             message: value.message
         }
 
-        props.createTransaction(transaction, value.recipientCharge)
+        props.createTransaction(transaction, value.recipientCharge,
+            value.saveRecipient)
+
+        form.resetFields()
+        setIsValid(false)
+    }
+
+    const accountNumberOption = props.friend.map(friend => ({
+        value: friend.friend_account_number,
+        label: `${friend.friend_account_number} - ${friend.bank_code} - ${friend.friend_name}`,
+        original: friend,
+    }))
+
+    const accountNumberOnSelect = (_, option) => {
+        form.setFieldsValue({
+            name: option.original.friend_name,
+            bankCode: option.original.bank_code,
+        })
+        setIsValid(true)
     }
 
     return (
@@ -100,12 +131,17 @@ const MoveMoney = props => {
                           message: 'Số tài khoản người nhận không được bỏ trống'
                       }
                   ]}>
-                <Input onChange={accountNumberOnchange}
-                       allowClear/>
+                <AutoComplete onChange={accountNumberOnchange}
+                    //onSearch={}
+                              onSelect={accountNumberOnSelect}
+                              options={accountNumberOption}
+                              allowClear>
+                    <Input/>
+                </AutoComplete>
             </Item>
             <Item name='amount'
                   label='Số tiền'
-                  initialValue={0}
+                  initialValue={10000}
                   rules={[
                       {
                           required: true,
@@ -116,7 +152,7 @@ const MoveMoney = props => {
                           message: 'Vui lòng nhập số, không nhập chữ',
                       },
                       {
-                          validator(_, value) {
+                          validator: (_, value) => {
                               if (value >= 10000) {
                                   return Promise.resolve()
                               }
@@ -134,10 +170,18 @@ const MoveMoney = props => {
             </Item>
             <Item name='recipientCharge'
                   valuePropName='checked'
+                  initialValue={true}
                   label='Người nhận chịu phí'>
                 <Checkbox/>
             </Item>
+            <Item name='saveRecipient'
+                  valuePropName='checked'
+                  initialValue={false}
+                  label='Lưu thông tin người nhận'>
+                <Checkbox/>
+            </Item>
             <Item name='message'
+                  initialValue=''
                   label='Lời nhắn'>
                 <Input allowClear
                        placeholder='Gửi lời nhắn đến người nhận (không bắt buôc)'/>
@@ -157,6 +201,7 @@ const mapStateToProps = state => {
     return {
         account: state.account,
         accountInfo: state.accountInfo,
+        friend: state.friend,
     }
 }
 
@@ -164,7 +209,8 @@ const mapDispatchToProps = dispatch => {
     return {
         createTransaction: (transaction, recipientCharge, saveRecipient) =>
             dispatch(transactionAction.createTransaction(transaction, recipientCharge,
-                saveRecipient))
+                saveRecipient)),
+        getFriend: _ => dispatch(friendAction.getFriend())
     }
 }
 

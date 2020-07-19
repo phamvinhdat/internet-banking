@@ -97,7 +97,6 @@ const updateSavingAccount = (savingAccountID, name, deltaBalance) => {
     }
 }
 
-
 const getAccountInfo = accountNumber => {
     return dispatch => {
         accountService.getAccountInfo(accountNumber)
