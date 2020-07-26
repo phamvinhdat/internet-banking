@@ -1,0 +1,1 @@
+web: ENV=production node backend/src/app

@@ -2,15 +2,19 @@ const {DataTypes} = require('sequelize');
 const sequelize = require('./index')
 
 const Friend = sequelize.define('friends', {
-    user_id: {
+    id: {
         type: DataTypes.BIGINT,
         allowNull: false,
         primaryKey: true,
+        autoIncrement: true
+    },
+    user_id: {
+        type: DataTypes.BIGINT,
+        allowNull: false,
     },
     friend_account_number: {
         type: DataTypes.STRING(255),
         allowNull: false,
-        primaryKey: true,
     },
     friend_name: {
         type: DataTypes.STRING(255),
