@@ -1,11 +1,18 @@
 require('module-alias/register')
 require('express-async-errors')
 const express = require('express')
+const path = require('path')
 const morgan = require('morgan')
 const cors = require('cors')
 const httpSttCode = require('http-status-codes')
 
 const app = express()
+
+app.use(express.static(path.join(__dirname, '../../frontend/build')))
+app.get('/*', (req, res) => {
+    res.sendFile(path.join(__dirname, '../../frontend/build', 'index.html'));
+});
+
 
 app.use(morgan('dev'))
 app.use(express.json())

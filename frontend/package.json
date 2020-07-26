@@ -1,6 +1,7 @@
 {
   "scripts": {
     "local": "react-scripts start",
+    "build": "react-scripts build",
     "start": "REACT_APP_ENV=development npm run local"
   },
   "browserslist": {
