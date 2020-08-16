@@ -19,8 +19,9 @@ const BANK_CODE = 'bankCode'
 router.post(`/:${BANK_CODE}/account-info`, validator.pgpProtocol(), async (req, res) => {
     const bankCode = req.param(BANK_CODE)
 
+    const payload = unescape(req.body.payload)
     const accountInfo = await associateBankService.getAccountInfo(bankCode,
-        req.body.payload, req.body.signature)
+        payload, req.body.signature)
 
     res.status(httpSttCode.OK)
         .json({
@@ -47,6 +48,32 @@ router.post(`/:${BANK_CODE}/transfer`, async (req, res) => {
         .json({
             message: 'success',
             data: transferInfo
+        })
+})
+
+router.post('/', async (req, res) => {
+    const body = req.body
+    const associcateBankInfo = await associateBankService
+        .associateBankCreating(body.bank_code, body.name)
+    
+    res.status(httpSttCode.OK)
+        .json({
+            message: 'success',
+            data: associcateBankInfo
+        })
+})
+
+router.put('/', async (req, res) => {
+    const body = req.body
+    const publicKey = unescape(body.public_key)
+    const data = await associateBankService
+        .prepareData(body.secret_key, publicKey, body.data)
+        res.status(httpSttCode.OK)
+
+    res.status(httpSttCode.OK)
+        .json({
+            message: 'success',
+            data: data
         })
 })
 

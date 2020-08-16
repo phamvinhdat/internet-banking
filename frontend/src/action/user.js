@@ -27,10 +27,23 @@ const login = (username, password) => {
             .then(user => {
                 dispatch(success(user))
                 history.push('/')
+                window.location.reload()
             })
             .catch(err => {
                 dispatch(failure(err.toString()))
                 message.error(err.toString())
+            })
+    }
+}
+
+const register = user => {
+    return dispatch => {
+        userService.register(user)
+            .then(res => {
+                message.success(res.message)
+            })
+            .catch(err => {
+                message.error(err)
             })
     }
 }
@@ -42,5 +55,6 @@ const logout = _ => {
 
 export const userAction = {
     login,
-    logout
+    logout,
+    register,
 }

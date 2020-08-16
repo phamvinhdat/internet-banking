@@ -1,21 +1,43 @@
-import React, {useState} from 'react'
-import {Layout, Menu, Button} from "antd";
-import {connect} from 'react-redux'
 import {
-    WalletOutlined,
-    LogoutOutlined,
     BankOutlined,
+    LogoutOutlined,
+    SolutionOutlined,
+    WalletOutlined,
 } from '@ant-design/icons'
-import Account from '../account/index'
+import {Layout, Menu} from "antd";
+import React, {useState} from 'react'
+import {connect} from 'react-redux'
 import {accountAction} from "../../action/account";
 import {userAction} from "../../action/user"
+import Account from '../account/index'
 import Service from "../service/index";
+import StaffService from "../staffservice/index";
 
 const {Content, Footer, Sider, Header} = Layout;
 
 const WALLET_ITEM = 'wallet'
 const SERVICE_ITEM = 'service'
+const STAFF_SERVICE_ITEM = 'staffservice'
 const LOGOUT_ITEM = 'logout'
+
+const staffMenu = authentication => {
+    if (!authentication || !authentication.user || !authentication.user.roles) {
+        return null
+    }
+
+    const role = authentication.user.roles
+    const exist = role.find(r => r.id === 2)
+    if (exist === undefined) {
+        return null
+    }
+
+    return <Menu.Item
+        key={STAFF_SERVICE_ITEM}
+        icon={<SolutionOutlined/>}
+        style={{margin: 1}}>
+        Quản lý
+    </Menu.Item>
+}
 
 const Dashboard = props => {
 
@@ -26,14 +48,16 @@ const Dashboard = props => {
             case WALLET_ITEM:
                 setContent(<Account/>)
                 break
-            case  SERVICE_ITEM:
+            case SERVICE_ITEM:
                 setContent(<Service/>)
+                break
+            case STAFF_SERVICE_ITEM:
+                setContent(<StaffService/>)
                 break
             case LOGOUT_ITEM:
                 props.logout()
         }
     }
-
     return (
         <Layout
             style={{
@@ -74,6 +98,8 @@ const Dashboard = props => {
                         Tiện ích
                     </Menu.Item>
                     <Menu.Divider/>
+                    {staffMenu(props.authentication)}
+                    <Menu.Divider/>
                     <Menu.Item
                         key={LOGOUT_ITEM}
                         icon={<LogoutOutlined/>}
@@ -111,7 +137,8 @@ const Dashboard = props => {
 
 const mapStateToProps = state => {
     return {
-        account: state.account
+        account: state.account,
+        authentication: state.authentication,
     }
 }
 

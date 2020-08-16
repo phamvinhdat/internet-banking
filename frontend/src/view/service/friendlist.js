@@ -1,7 +1,7 @@
 import {friendAction} from "../../action/friend";
 import React, {useState} from 'react'
 import {connect} from 'react-redux'
-import {Table, Button, Modal, Form} from "antd";
+import {Table, Button, Modal, Form, Input} from "antd";
 import {DeleteOutlined, EditOutlined} from '@ant-design/icons';
 
 const formLayout = {
@@ -11,6 +11,10 @@ const formLayout = {
 
 const FriendList = props => {
     const [visibleUpdatingModal, setVisibleUpdatingModal] = useState(false)
+    const [currentSelectFriend, setCurrentSelectFriend] = useState({
+        name: "",
+        accountNumber: 0,
+    })
 
     const columns = [
         {
@@ -47,6 +51,7 @@ const FriendList = props => {
                         size='small'
                         icon={<EditOutlined/>}
                         onClick={_ => {
+                            setCurrentSelectFriend({...friend})
                             setVisibleUpdatingModal(true)
                         }}
                         style={{margin: '5px'}}>Cập nhật</Button>
@@ -66,6 +71,11 @@ const FriendList = props => {
         setVisibleUpdatingModal(false)
     }
 
+    const formSubmit = value => {
+        props.updateFriend(currentSelectFriend.accountNumber, value.newName)
+        onCloseUpdatingModal()
+    }
+
     return <div>
         <Table dataSource={dataSource}
                tableLayout='auto'
@@ -81,8 +91,20 @@ const FriendList = props => {
                }}
                onCancel={onCloseUpdatingModal}
                visible={visibleUpdatingModal}>
-            <Form id='updateFriendForm'>
-
+            <Form {...formLayout}
+                  onFinish={formSubmit}
+                  id='updateFriendForm'>
+                <Form.Item
+                    label="Tên gợi nhớ"
+                    name="newName"
+                    initialValue={currentSelectFriend.name}
+                    rules={[{
+                        required: true,
+                        message: 'Tên người dùng không được bỏ trống',
+                    }]}
+                >
+                    <Input/>
+                </Form.Item>
             </Form>
         </Modal>
     </div>
@@ -97,6 +119,8 @@ const mapStateToProps = state => {
 const mapDispatchToProps = dispatch => {
     return {
         getFriend: _ => dispatch(friendAction.getFriend()),
+            updateFriend: (friendAccountNumber, newFriendName) => dispatch(
+            friendAction.updateFriend(friendAccountNumber, newFriendName)),
         deleteFriend: friendAccountNumber => dispatch(
             friendAction.deleteFriend(friendAccountNumber))
     }

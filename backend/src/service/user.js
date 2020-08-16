@@ -57,5 +57,16 @@ module.exports = {
             }
         })
     },
+    getUserByID: async userID => {
+        let user = await UserModel.findOne({where: {id: userID}})
+            .then(u => {
+                if (u === null) {
+                    throw createError(httpSttCode.NOT_FOUND, 'user not exists')
+                }
+            })
+            .catch(err => {
+                throw createError(httpSttCode.INTERNAL_SERVER_ERROR, err)
+            })
 
+    }
 }

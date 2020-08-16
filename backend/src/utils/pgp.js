@@ -5,7 +5,7 @@ const config = require('@be-root/config')
 const pgp = {
     generatePGPKey: async data => {
         const {privateKeyArmored, publicKeyArmored} = await openpgp.generateKey({
-            userIds: data,
+            userIds: [data],
             rsaBits: 4096,
             passphrase: config.PGP_SECRET_KEY
         })
@@ -28,11 +28,12 @@ const pgp = {
     },
 
     decryptPGP: async (encryptedData, privateKey) => {
-        const prKey = (await openpgp.key.readArmored([privateKey])).keys[0];
-        await prKey.decrypt(config.PGP_SECRET_KEY);
+        const prKey = (await openpgp.key.readArmored(privateKey)).keys[0]
+        await prKey.decrypt(config.PGP_SECRET_KEY)
+        const msg = await openpgp.message.readArmored(encryptedData)
         const decrypted = await openpgp.decrypt({
-            message: await openpgp.message.readArmored(encryptedData),
-            privateKeys: [prKey]
+            message: msg,
+            privateKeys: prKey
         })
         return JSON.parse(decrypted.data)
     }

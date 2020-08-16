@@ -25,6 +25,16 @@ router.get('/', async (req, res) => {
         })
 })
 
+router.put(`/:${accountNumberParam}`, async (req, res) => {
+    const accountNumber = req.params[accountNumberParam]
+    await friendService.updateFriend(req.userID, accountNumber, req.body.new_name)
+
+    res.status(httpSttCode.OK)
+        .json({
+            message: 'Cập nhật tên thành công',
+        })
+})
+
 router.delete(`/:${accountNumberParam}`, async (req, res) => {
     const accountNumber = req.params[accountNumberParam]
     await friendService.deleteFriend(req.userID, accountNumber)

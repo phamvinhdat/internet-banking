@@ -1,4 +1,6 @@
 const UserModel = require('@be-src/model/users')
+const UserRoleModel = require('@be-src/model/user_roles')
+const RoleModel = require('@be-src/model/roles')
 const httpSttCode = require('http-status-codes')
 const createError = require('http-errors')
 const crypto = require('@be-src/utils/crypto')
@@ -22,10 +24,31 @@ module.exports = {
             })
 
         const hashPassword = crypto.encryptSHA3(password)
-        console.log(user.password, hashPassword)
         if (user.password !== hashPassword) {
             throw errUsernamePassword
         }
+
+        // get roles
+        const roles = await RoleModel.findAll()
+            .catch(err => {
+                throw createError(httpSttCode.INTERNAL_SERVER_ERROR, err)
+            })
+
+        // get role
+        const userRoles = await UserRoleModel.findAll({
+            where: {
+                user_id: user.id,
+            }
+        }).catch(err => {
+            throw createError(httpSttCode.INTERNAL_SERVER_ERROR, err)
+        })
+        const mapRoles = userRoles.map(role => {
+            const r = roles.find(r => r.id === role.role_id)
+            return {
+                id: r.id,
+                role: r.role,
+            }
+        })
 
         // correct username and password
         // gen refresh token
@@ -40,7 +63,8 @@ module.exports = {
         const jwtToken = generator.jwtToken(user.id)
         return {
             token: jwtToken,
-            refresh_token: refreshToken
+            refresh_token: refreshToken,
+            roles: mapRoles,
         }
     },
 

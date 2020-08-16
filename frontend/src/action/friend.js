@@ -40,8 +40,20 @@ const deleteFriend = friendAccountNumber => dispatch => {
         })
 }
 
+const updateFriend = (friendAccountNumber, newFriendName) => dispatch => {
+    friendService.updateFriend(friendAccountNumber, newFriendName)
+        .then(res => {
+            message.success(res.message)
+            dispatch(getFriend())
+        })
+        .catch(err => {
+            message.error(err)
+        })
+}
+
 export const friendAction = {
     getFriend,
     createFriend,
     deleteFriend,
+    updateFriend,
 }

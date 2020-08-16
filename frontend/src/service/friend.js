@@ -13,6 +13,13 @@ const createFriend = friend => {
         .catch(service.handleResponse)
 }
 
+const updateFriend = (friendAccountNumber, newFriendName) => axios.put(
+    `/friend/${friendAccountNumber}`, {
+        new_name: newFriendName,
+    }, service.bearerHeader())
+    .then(service.handleResponse)
+    .catch(service.handleResponse)
+
 const deleteFriend = friendAccountNumber => axios.delete(
     `/friend/${friendAccountNumber}`, service.bearerHeader())
     .then(service.handleResponse)
@@ -22,4 +29,5 @@ export const friendService = {
     getFriend,
     createFriend,
     deleteFriend,
+    updateFriend,
 }

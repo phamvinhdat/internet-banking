@@ -18,6 +18,16 @@ const login = (username, password) => {
         .catch(service.handleResponse)
 }
 
+const register = user => {
+    return axios.post('/user/register', {
+        name: user.name,
+        email: user.email,
+        password: user.password,
+    })
+        .then(service.handleResponse)
+        .catch(service.handleResponse)
+}
+
 function logout() {
     // remove user from local storage to log user out
     store.clearAll()
@@ -26,4 +36,5 @@ function logout() {
 export const userService = {
     login,
     logout,
+    register,
 }
