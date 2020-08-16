@@ -41,13 +41,12 @@ router.post(`/:${BANK_CODE}/transfer`, async (req, res) => {
             'signature or (and) payload is null')
     }
 
-    const transferInfo = await associateBankService.transfer(bankCode,
+    await associateBankService.transfer(bankCode,
         req.body.payload, req.body.signature)
 
     res.status(httpSttCode.OK)
         .json({
-            message: 'success',
-            data: transferInfo
+            message: 'Chuyển khoản thành công',
         })
 })
 

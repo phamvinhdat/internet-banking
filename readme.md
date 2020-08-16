@@ -18,12 +18,20 @@ Sinh viên thực hiện:
     - Public key: dùng để nén thông tin trao đổi, sau khi nén thông tin gọi là x
     - Secret key: mã hóa một chiều, dùng để mã hóa x, mục đích để xác thực và đảm bảo tính toàn vẹn của x
 
-- Các api luôn liên kết luôn có hai field:
+- Các api luôn liên kết luôn có hai field bắt buộc khi gửi yêu cầu:
 
 |#| field | type | required |  Description
 |---|---|--- | --- | ---
 | 1 | payload | object | x | Chứa thông tin, là mã hóa của của public key và data cần gửi (data mô tả ở api)
 | 2 | signature | string | x | Chữ kí số, HMACSHA512 của `payload` và `secret key`
+
+- Response trả về luôn có dạng:
+
+|#| field | type | required |  Description
+|---|---|--- | --- | ---
+|1| message|string|x|Message
+|2| data | object| |Chứa thông tin trả về
+
 
 ### API lấy thông tin khách hàng
 
@@ -34,6 +42,13 @@ Sinh viên thực hiện:
 |#| field | type | required |  Description
 |---|---|--- | --- | ---
 |1| account_number|int|x|Số tài khoản của khách hàng
+
+- response data:
+
+|#| field | type |  Description
+|---|---|--- | ---
+|1| name | string | Tên của tài khoản
+|2| account_number|int| Số tài khoản khách hàng
 
 ### API chuyển tiền
 
