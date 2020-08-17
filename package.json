@@ -13,14 +13,14 @@
   "author": "datpv hungtq",
   "license": "ISC",
   "dependencies": {
-    "antd": "^4.4.2",
+    "antd": "^4.5.4",
     "axios": "^0.19.2",
     "bcrypt": "^4.0.1",
     "cors": "^2.8.5",
     "crypto-js": "^4.0.0",
     "express": "^4.17.1",
     "express-async-errors": "^3.1.1",
-    "express-validator": "^6.6.0",
+    "express-validator": "^6.6.1",
     "history": "^4.10.1",
     "http-errors": "^1.8.0",
     "http-status-codes": "^1.4.0",
@@ -29,19 +29,20 @@
     "morgan": "^1.10.0",
     "mysql2": "^2.1.0",
     "node-sass": "^4.14.1",
-    "openpgp": "^4.10.6",
+    "openpgp": "^4.10.7",
     "react": "^16.13.1",
     "react-dom": "^16.13.1",
+    "react-google-recaptcha": "^2.1.0",
     "react-hot-loader": "^4.12.21",
-    "react-redux": "^7.2.0",
+    "react-redux": "^7.2.1",
     "react-router-dom": "^5.2.0",
-    "react-scripts": "^3.4.1",
+    "react-scripts": "^3.4.3",
     "redux": "^4.0.5",
     "redux-logger": "^3.0.6",
     "redux-thunk": "^2.3.0",
     "sequelize": "^5.22.3",
     "store": "^2.0.12",
-    "uuid": "^8.2.0"
+    "uuid": "^8.3.0"
   },
   "_moduleAliases": {
     "@be-root": "./backend",
@@ -50,7 +51,7 @@
     "@fe-src": "./frontend/src"
   },
   "devDependencies": {
-    "concurrently": "^5.2.0",
+    "concurrently": "^5.3.0",
     "nodemon": "^2.0.4"
   }
 }

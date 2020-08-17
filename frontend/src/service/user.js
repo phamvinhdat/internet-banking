@@ -5,10 +5,11 @@ import store from 'store'
 
 axios.defaults.baseURL = config.ROOT_API
 
-const login = (username, password) => {
+const login = (username, password, captchaKey) => {
     return axios.post('/auth', {
         username: username,
-        password: password
+        password: password,
+        captcha_key: captchaKey
     })
         .then(service.handleResponse)
         .then(user => {

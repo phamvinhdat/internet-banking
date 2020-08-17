@@ -14,7 +14,8 @@ router.post('/', validator.postLogin(), async (req, res) => {
     }
 
     const user = req.body
-    const loginData = await authService.login(user.username, user.password)
+    const loginData = await authService
+        .login(user.username, user.password, user.captcha_key)
     res.status(httpSttCode.OK)
         .json({
             message: 'login success',

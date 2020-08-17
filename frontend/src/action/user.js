@@ -3,7 +3,7 @@ import {userConstants} from "../contstant/user";
 import {userService} from "../service/user";
 import history from '../util/history/index'
 
-const login = (username, password) => {
+const login = (username, password, captchaKey) => {
     const request = user => {
         message.loading('Vui lòng chờ ...', 0)
         return {type: userConstants.LOGIN_REQUEST, user}
@@ -23,7 +23,7 @@ const login = (username, password) => {
 
     return dispatch => {
         dispatch(request({username}))
-        userService.login(username, password)
+        userService.login(username, password, captchaKey)
             .then(user => {
                 dispatch(success(user))
                 history.push('/')

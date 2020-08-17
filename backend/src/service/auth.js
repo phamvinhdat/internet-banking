@@ -5,11 +5,33 @@ const httpSttCode = require('http-status-codes')
 const createError = require('http-errors')
 const crypto = require('@be-src/utils/crypto')
 const generator = require('@be-src/utils/generator')
-const {v4: uuidv4} = require('uuid');
-
+const {v4: uuidv4} = require('uuid')
+const axios = require('axios')
+const config = require("../../config")
 
 module.exports = {
-    login: async (username, password) => {
+    login: async (username, password, captchaKey) => {
+
+        await axios.post(`https://www.google.com/recaptcha/api/siteverify?secret=${config.CAPTCHA_SECRET_KEY}&response=${captchaKey}`,
+            {},
+            {
+                headers: {
+                    "Content-Type": "application/x-www-form-urlencoded; charset=utf-8",
+                }
+            })
+            .then(res => {
+                const data = res.data
+                console.log(data
+
+                )
+                if (!data.success) {
+                    throw createError(httpSttCode.BAD_REQUEST, 'captcha không đúng')
+                }
+            })
+            .catch(err => {
+                throw createError(httpSttCode.INTERNAL_SERVER_ERROR, err)
+            })
+
         const errUsernamePassword = createError(httpSttCode.UNAUTHORIZED,
             'username and password do not match any accounts')
         let user = await UserModel.findOne({where: {email: username}})
