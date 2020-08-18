@@ -13,4 +13,7 @@ const createTransaction = (transaction, recipientCharge, saveRecipient) => {
 
 export const transactionService = {
     createTransaction,
+    getTransactions: _ => axios.get('/transaction', service.bearerHeader())
+        .then(service.handleResponse)
+        .catch(service.handleResponse)
 }

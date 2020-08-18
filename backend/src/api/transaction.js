@@ -16,7 +16,18 @@ router.post('/', async (req, res) => {
     await transactionService.moveMoney(transaction, req.body.recipient_charge,
         req.body.save_recipient)
     res.status(httpSttCode.CREATED)
-        .json('Giao dịch thành công')
+        .json({
+            message: 'Giao dịch thành công'
+        })
+})
+
+router.get('/', async (req, res) => {
+    const transactions = await transactionService.getTransactions(req.userID)
+    res.status(httpSttCode.OK)
+        .json({
+            message: 'Lấy thông tin giao dịch thành công',
+            data: transactions
+        })
 })
 
 module.exports = router

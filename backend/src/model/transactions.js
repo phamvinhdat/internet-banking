@@ -12,10 +12,6 @@ const Transaction = sequelize.define('transactions', {
         type: DataTypes.STRING(255),
         allowNull: false
     },
-    receiver_name: {
-        type: DataTypes.STRING(255),
-        allowNull: true
-    },
     receiver_bank_code: {
         type: DataTypes.STRING(255),
         allowNull: false,
