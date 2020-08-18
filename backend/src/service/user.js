@@ -6,6 +6,8 @@ const UserRoles = require('@be-src/model/user_roles')
 const crypto = require('@be-src/utils/crypto')
 const generator = require('@be-src/utils/generator')
 const consts = require('@be-src/consts/index')
+const Sequelize = require('sequelize')
+const Op = Sequelize.Op
 
 module.exports = {
     createUser: async (user, roles) => {
@@ -68,5 +70,39 @@ module.exports = {
                 throw createError(httpSttCode.INTERNAL_SERVER_ERROR, err)
             })
 
+    },
+    getUsers: async adminID => {
+        const users = await UserModel.findAll({
+            where: {
+                id: {
+                    [Op.ne]: adminID
+                },
+            }
+        }).then(us => {
+            if (us === null) {
+                throw createError(httpSttCode.NOT_FOUND, 'user not exists')
+            }
+
+            return us
+        }).catch(err => {
+            throw createError(httpSttCode.INTERNAL_SERVER_ERROR, err)
+        })
+
+        let userReturn = []
+        for (let i = 0; i < users.length; i++) {
+            const user = users[i]
+            const userRoles = await UserRoles.findAll({where: {user_id: user.id}})
+                .catch(err => {
+                    throw createError(httpSttCode.INTERNAL_SERVER_ERROR, err)
+                })
+            userReturn[i] = {
+                id: user.id,
+                email: user.email,
+                account_number: user.account_number,
+                roles: userRoles
+            }
+        }
+
+        return userReturn
     }
 }

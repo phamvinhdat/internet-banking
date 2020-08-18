@@ -31,4 +31,13 @@ router.post('/register', validator.postRegister(), async (req, res) => {
         })
 })
 
+router.get('/', async (req, res) => {
+    const users = await userService.getUsers(req.userID)
+    res.status(httpSttCode.OK)
+        .json({
+            message: 'success',
+            data: users
+        })
+})
+
 module.exports = router

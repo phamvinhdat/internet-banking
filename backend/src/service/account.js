@@ -62,18 +62,20 @@ module.exports = {
             throw createError(httpSttCode.INTERNAL_SERVER_ERROR, err)
         })
 
-        if (result === null) {
-            const user = await utilsService.getUserByCondition(
-                {account_number: accountNumber},
-                'Không tìm thấy thông tin tài khoản'
-            )
+        const user = await utilsService.getUserByCondition(
+            {account_number: accountNumber},
+            'Không tìm thấy thông tin tài khoản'
+        )
 
-            result = {
+        if (result === null) {
+            return {
                 name: user.name,
                 bank_code: user.bank_code,
+                email: user.email,
             }
         }
 
+        result.email = user.email
         return result
     },
 
