@@ -40,4 +40,19 @@ router.get('/', async (req, res) => {
         })
 })
 
+router.put('/role-staff/:userID', async (req, res) => {
+    const userID = req.params.userID
+    const type = req.body.type
+    if (type === 'set') {
+        await userService.setStaffRole(userID)
+    } else {
+        await userService.removeStaffRole(userID)
+    }
+
+    res.status(httpSttCode.OK)
+        .json({
+            message: 'Thành công',
+        })
+})
+
 module.exports = router

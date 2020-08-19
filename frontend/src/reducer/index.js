@@ -1,5 +1,5 @@
 import {combineReducers} from "redux"
-import {authentication} from "./authentication"
+import {authentication, users} from "./authentication"
 import {account, accountInfo} from "./account";
 import {friend} from "./friend";
 import {transactions} from "./transaction";
@@ -10,6 +10,7 @@ const rootReducer = combineReducers({
     accountInfo,
     friend,
     transactions,
+    users,
 })
 
 export default rootReducer

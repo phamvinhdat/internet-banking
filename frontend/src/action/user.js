@@ -36,17 +36,41 @@ const login = (username, password, captchaKey) => {
     }
 }
 
+const getUsers = _ => dispatch => userService.getUsers()
+    .then(res => {
+        const {data} = res
+        dispatch({
+            type: userConstants.GET_USER_SUCCESS,
+            data
+        })
+    }).catch(err => {
+        message.error(err.toString())
+        dispatch({
+            type: userConstants.GET_USER_FAILURE
+        })
+    })
+
 const register = user => {
     return dispatch => {
         userService.register(user)
             .then(res => {
                 message.success(res.message)
+                dispatch(getUsers())
             })
             .catch(err => {
                 message.error(err)
             })
     }
 }
+
+const putStaffRole = (userID, type) => dispatch => userService
+    .putStaffRole(userID, type)
+    .then(_ => {
+        dispatch(getUsers())
+    })
+    .catch(err => {
+        message.error(err)
+    })
 
 const logout = _ => {
     userService.logout()
@@ -57,4 +81,6 @@ export const userAction = {
     login,
     logout,
     register,
+    getUsers,
+    putStaffRole,
 }

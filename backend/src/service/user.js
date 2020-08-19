@@ -104,5 +104,47 @@ module.exports = {
         }
 
         return userReturn
-    }
+    },
+
+    removeStaffRole: async userID => {
+        await UserRoles.findOne({
+            where: {
+                user_id: userID,
+                role_id: 2,
+            }
+        }).then(us => {
+            if (us === null) {
+                return
+            }
+
+            UserRoles.destroy({
+                where: {
+                    user_id: userID,
+                    role_id: 2,
+                }
+            })
+        }).catch(err => {
+            throw createError(httpSttCode.INTERNAL_SERVER_ERROR, err)
+        })
+    },
+
+    setStaffRole: async userID => {
+        await UserRoles.findOne({
+            where: {
+                user_id: userID,
+                role_id: 2,
+            }
+        }).then(us => {
+            if (us !== null) {
+                return
+            }
+
+            UserRoles.create({
+                user_id: userID,
+                role_id: 2,
+            })
+        }).catch(err => {
+            throw createError(httpSttCode.INTERNAL_SERVER_ERROR, err)
+        })
+    },
 }

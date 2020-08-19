@@ -51,12 +51,13 @@ CREATE TABLE IF NOT EXISTS `users`(
 )ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 CREATE TABLE IF NOT EXISTS `user_roles`(
+  `id`        BIGINT(20) NOT NULL AUTO_INCREMENT,
   `user_id`   BIGINT(20) NOT NULL,
   `role_id`   BIGINT(20) NOT NULL,
   `create_at` TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
   `update_at` TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
   `delete_at` TIMESTAMP NULL DEFAULT NULL,
-  PRIMARY KEY (`user_id`, `role_id`),
+  PRIMARY KEY (`id`),
   KEY `user_roles_index` (`delete_at`)
 )ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 

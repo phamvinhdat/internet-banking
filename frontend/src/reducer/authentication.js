@@ -34,3 +34,14 @@ export const authentication = (state = initialState, action) => {
             return state
     }
 }
+
+export const users = (state = [], action) => {
+    switch (action.type) {
+        case userConstants.GET_USER_SUCCESS:
+            return action.data
+        case userConstants.GET_USER_FAILURE:
+            return []
+        default:
+            return state
+    }
+}

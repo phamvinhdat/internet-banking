@@ -38,4 +38,11 @@ export const userService = {
     login,
     logout,
     register,
+    getUsers: _ => axios.get('/user', service.bearerHeader())
+        .then(service.handleResponse)
+        .catch(service.handleResponse),
+    putStaffRole: (userID, type) => axios.put(`/user/role-staff/${userID}`,
+        { type: type }, service.bearerHeader())
+        .then(service.handleResponse)
+        .catch(service.handleResponse)
 }
