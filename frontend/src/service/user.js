@@ -24,7 +24,7 @@ const register = user => {
         name: user.name,
         email: user.email,
         password: user.password,
-    })
+    }, service.bearerHeader())
         .then(service.handleResponse)
         .catch(service.handleResponse)
 }
@@ -42,7 +42,7 @@ export const userService = {
         .then(service.handleResponse)
         .catch(service.handleResponse),
     putStaffRole: (userID, type) => axios.put(`/user/role-staff/${userID}`,
-        { type: type }, service.bearerHeader())
+        {type: type}, service.bearerHeader())
         .then(service.handleResponse)
         .catch(service.handleResponse)
 }
