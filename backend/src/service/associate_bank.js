@@ -6,6 +6,7 @@ const httpSttCode = require('http-status-codes')
 const createError = require('http-errors')
 const uuid = require('uuid')
 const TransactionModel = require('@be-src/model/transactions')
+const notiService = require('./notification')
 
 const decode = async (bankCode, payload, signature) => {
     const associateBank = await AssociateBankModel.findOne({where: {bank_code: bankCode}})
@@ -136,6 +137,9 @@ module.exports = {
         }).catch(err => {
             console.log('failed to create transaction', err)
         })
+
+        await notiService.createNotification(user.id, 'Nhận chuyển khoản',
+            `Nhận chuyển khoản từ ngân hàng ${bankCode}`, data.value)
 
         return {
             new_balance: user.balance

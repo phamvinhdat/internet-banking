@@ -3,20 +3,24 @@ import {
     LogoutOutlined,
     SolutionOutlined,
     WalletOutlined,
+    GlobalOutlined,
 } from '@ant-design/icons'
-import {Layout, Menu} from "antd";
-import React, {useState} from 'react'
+import {Badge, Layout, Menu} from "antd";
+import {notiAction} from "../../action/noti";
+import React, {useState, useEffect} from 'react'
 import {connect} from 'react-redux'
 import {accountAction} from "../../action/account";
 import {userAction} from "../../action/user"
 import Account from '../account/index'
 import Service from "../service/index";
 import StaffService from "../staffservice/index";
+import NotiList from "../noti/index";
 
 const {Content, Footer, Sider, Header} = Layout;
 
 const WALLET_ITEM = 'wallet'
 const SERVICE_ITEM = 'service'
+const NOTI_ITEM = 'noti'
 const STAFF_SERVICE_ITEM = 'staffservice'
 const LOGOUT_ITEM = 'logout'
 
@@ -40,8 +44,16 @@ const staffMenu = authentication => {
 }
 
 const Dashboard = props => {
-
     const [content, setContent] = useState(<Account/>)
+
+    const loopGetNoti = async _ => {
+        props.getNotis()
+        await new Promise(resolve => setTimeout(resolve, 3000))
+        await loopGetNoti()
+    }
+
+    useEffect(_ => loopGetNoti(), [])
+
     const onMenuSelect = obj => {
         const {key} = obj
         switch (key) {
@@ -53,6 +65,9 @@ const Dashboard = props => {
                 break
             case STAFF_SERVICE_ITEM:
                 setContent(<StaffService/>)
+                break
+            case NOTI_ITEM:
+                setContent(<NotiList/>)
                 break
             case LOGOUT_ITEM:
                 props.logout()
@@ -89,6 +104,14 @@ const Dashboard = props => {
                         icon={<WalletOutlined/>}
                         style={{margin: 1}}>
                         Thông tin tài khoản
+                    </Menu.Item>
+                    <Menu.Divider/>
+                    <Menu.Item
+                        key={NOTI_ITEM}
+                        icon={<GlobalOutlined/>}
+                        style={{margin: 1}}>
+                        <Badge offset={[20, 0]} count={props.notis.count}>
+                            Thông báo</Badge>
                     </Menu.Item>
                     <Menu.Divider/>
                     <Menu.Item
@@ -139,13 +162,15 @@ const mapStateToProps = state => {
     return {
         account: state.account,
         authentication: state.authentication,
+        notis: state.notis,
     }
 }
 
 const mapDispatchToProps = dispatch => {
     return {
         logout: _ => dispatch(userAction.logout()),
-        getAccount: _ => dispatch(accountAction.getAccounts())
+        getAccount: _ => dispatch(accountAction.getAccounts()),
+        getNotis: _ => dispatch(notiAction.getNotis())
     }
 }
 

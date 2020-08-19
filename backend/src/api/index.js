@@ -13,5 +13,6 @@ router.use('/account', customerMiddleware, require('@be-src/api/account'))
 router.use('/associate-bank', require('@be-src/api/associate_bank'))
 router.use('/friend', customerMiddleware, require('@be-src/api/friend'))
 router.use('/transaction', customerMiddleware, require('@be-src/api/transaction'))
+router.use('/notification', customerMiddleware, require('@be-src/api/notification'))
 
 module.exports = router

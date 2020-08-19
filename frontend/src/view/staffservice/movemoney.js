@@ -79,7 +79,7 @@ const MoveMoney = props => {
         const transaction = {
             receiver_account_number: value.accountNumber,
             receiver_bank_code: value.bankCode,
-            sender_account_number: props.account.account_number,
+            sender_account_number: 'system',
             sender_bank_code: 'YSB',
             amount: value.amount,
             message: value.message
@@ -157,7 +157,6 @@ const MoveMoney = props => {
                 <InputNumber step={10000}
                              parser={inputNumberParser}
                              formatter={inputNumberFormatter}
-                             max={props.account.balance}
                              min={10000}
                              style={{width: '150px'}}/>
             </Item>

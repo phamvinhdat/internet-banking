@@ -11,8 +11,10 @@ router.post('/', async (req, res) => {
         id: req.userID
     }, "Người dùng không thể xác minh, vui lòng thử lại", httpSttCode.UNAUTHORIZED)
 
-    transaction.sender_account_number = sender.account_number
-    transaction.sender_bank_code = sender.bank_code
+    if (transaction.sender_account_number !== 'system'){
+        transaction.sender_account_number = sender.account_number
+        transaction.sender_bank_code = sender.bank_code
+    }
     await transactionService.moveMoney(transaction, req.body.recipient_charge,
         req.body.save_recipient)
     res.status(httpSttCode.CREATED)

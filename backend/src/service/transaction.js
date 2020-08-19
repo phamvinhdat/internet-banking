@@ -21,6 +21,19 @@ const minSenderBalance = (recipientCharge, amount) => {
     return amount + moveMoneyFee(amount)
 }
 
+const systemMoveMoney = async (transaction, recipient) => {
+    const newBalance = recipient.balance + transaction.amount
+    return UserModel.update({
+        balance: newBalance
+    }, {
+        where: {account_number: transaction.receiver_account_number}
+    })
+        .then(_ => TransactionModel.create(transaction))
+        .catch(err => {
+            throw createError(httpSttCode.INTERNAL_SERVER_ERROR, err)
+        })
+}
+
 const moveMoneyYSBBank = async (transaction, sender, recipient, recipientCharge) => {
     if (sender.balance < minSenderBalance()) {
         throw createError(httpSttCode.NOT_ACCEPTABLE, "Số dư không đủ")
@@ -49,6 +62,11 @@ const moveMoneyYSBBank = async (transaction, sender, recipient, recipientCharge)
 
 const moveMoney = async (transaction, sender, recipient, recipientCharge) => {
 
+    if (transaction.sender_account_number === 'system') {
+        await systemMoveMoney(transaction, recipient)
+        return
+    }
+
     switch (transaction.receiver_bank_code) {
         case 'YSB':
             await moveMoneyYSBBank(transaction, sender, recipient, recipientCharge)
@@ -57,9 +75,12 @@ const moveMoney = async (transaction, sender, recipient, recipientCharge) => {
 
 module.exports = {
     moveMoney: async (transaction, recipientCharge, saveRecipient) => {
-        const sender = await utils.getUserByCondition({
-            account_number: transaction.sender_account_number,
-        }, 'Không xác thực được thông tin người gửi, vui lòng thử lại')
+        let sender
+        if (transaction.sender_account_number !== 'system') {
+            sender = await utils.getUserByCondition({
+                account_number: transaction.sender_account_number,
+            }, 'Không xác thực được thông tin người gửi, vui lòng thử lại')
+        }
 
         const recipient = await utils.getUserByCondition({
             account_number: transaction.receiver_account_number

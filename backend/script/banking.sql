@@ -8,9 +8,24 @@ DROP TABLE IF EXISTS `roles`;
 DROP TABLE IF EXISTS `transactions`;
 DROP TABLE IF EXISTS `accounts`;
 DROP TABLE IF EXISTS `friends`;
+DROP TABLE IF EXISTS `notifications`;
+
+CREATE TABLE IF NOT EXISTS `notifications`(
+  `id`                    BIGINT(20) NOT NULL AUTO_INCREMENT,
+  `user_id`               BIGINT(20) NOT NULL,
+  `type`                  VARCHAR(255) NOT NULL,
+  `message`               VARCHAR(255) NOT NULL DEFAULT '-',
+  `amount`                BIGINT(20) NOT NULL DEFAULT 0,
+  `read`                  BOOLEAN NOT NULL DEFAULT FALSE,
+  `create_at`             TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  `update_at`             TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  `delete_at`             TIMESTAMP NULL DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `friends_index` (`delete_at`)
+)ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 CREATE TABLE IF NOT EXISTS `friends`(
-  `id`             BIGINT(20) NOT NULL AUTO_INCREMENT,
+  `id`                    BIGINT(20) NOT NULL AUTO_INCREMENT,
   `user_id`               BIGINT(20) NOT NULL,
   `friend_account_number` VARCHAR(255) NOT NULL,
   `bank_code`             VARCHAR(255) NOT NULL DEFAULT 'YSB',
