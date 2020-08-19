@@ -1,6 +1,7 @@
 const express = require('express')
 const notificationService = require('@be-src/service/notification')
 const httpSttCode = require('http-status-codes')
+const utils = require('../service/utils')
 
 const router = express.Router()
 
@@ -25,9 +26,23 @@ router.get('/', async (req, res) => {
 })
 
 router.post('/', async (req, res) => {
+    console.log(req.body)
+
     const body = req.body
-    await notificationService.createNotification(body.user_id, body.type,
+    let userID
+    if (body.account_number) {
+        const user = await utils.getUserByCondition({
+            account_number: body.account_number,
+        }, 'Người dùng không tồn tại')
+
+        userID = user.id
+    } else {
+        userID = body.user_id
+    }
+
+    await notificationService.createNotification(userID, body.type,
         body.message, body.amount)
+
     res.status(httpSttCode.CREATED)
         .json({
             message: 'Tạo thông báo thành công',

@@ -74,6 +74,7 @@ const putStaffRole = (userID, type) => dispatch => userService
 
 const logout = _ => {
     userService.logout()
+    window.location.reload()
     return {type: userConstants.LOGOUT}
 }
 
