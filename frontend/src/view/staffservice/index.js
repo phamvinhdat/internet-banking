@@ -3,17 +3,20 @@ import {Tabs} from "antd"
 import {
     UserAddOutlined,
     MoneyCollectOutlined,
-    RiseOutlined
+    RiseOutlined,
+    HistoryOutlined,
 } from '@ant-design/icons'
 import UserCreating from "./usercreating";
 import MoveMoney from "./movemoney";
 import UserList from "./userlist";
 import {connect} from 'react-redux'
+import TransactionList from "./transactionlist";
 
 const {TabPane} = Tabs
 const MOVE_MONEY = 'MOVE_MONEY'
 const MOVE_MONEY_LIST = 'MOVE_MONEY_LIST'
 const USER_LIST = 'USER_LIST'
+const TRANSACTION = 'TRANSACTION'
 
 const adminItem = authentication => {
     if (!authentication || !authentication.user || !authentication.user.roles) {
@@ -26,10 +29,16 @@ const adminItem = authentication => {
         return null
     }
 
-    return <TabPane key={USER_LIST}
-                    tab={<span>Quản lí nhân viên <RiseOutlined/></span>}>
-        <UserList/>
-    </TabPane>
+    return [
+        <TabPane key={USER_LIST}
+                 tab={<span>Quản lí nhân viên <RiseOutlined/></span>}>
+            <UserList/>
+        </TabPane>,
+        <TabPane key={TRANSACTION}
+                 tab={<span>Ngoại giao dịch <HistoryOutlined/></span>}>
+            <TransactionList/>
+        </TabPane>,
+    ]
 }
 
 const StaffService = props => {

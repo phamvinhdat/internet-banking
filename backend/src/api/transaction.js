@@ -30,4 +30,13 @@ router.get('/', async (req, res) => {
         })
 })
 
+router.get('/admin', async (req, res) => {
+    const transactions = await transactionService.getAsTransactions()
+    res.status(httpSttCode.OK)
+        .json({
+            message: 'Lấy thông tin giao dịch thành công',
+            data: transactions
+        })
+})
+
 module.exports = router

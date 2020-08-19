@@ -15,5 +15,9 @@ export const transactionService = {
     createTransaction,
     getTransactions: _ => axios.get('/transaction', service.bearerHeader())
         .then(service.handleResponse)
-        .catch(service.handleResponse)
+        .catch(service.handleResponse),
+    getAsTransactions: _ => axios.get('/transaction/admin',
+        service.bearerHeader())
+        .then(service.handleResponse)
+        .catch(service.handleResponse),
 }

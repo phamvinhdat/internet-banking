@@ -18,6 +18,20 @@ const getTransactions = _ => dispatch => transactionService.getTransactions()
         })
     })
 
+const getAsTransactions = _ => dispatch => transactionService.getAsTransactions()
+    .then(res => {
+        const {data} = res
+        dispatch({
+            type: transactionConstants.GET_AS_TRANSACTION_SUCCESS,
+            data
+        })
+    }).catch(err => {
+        message.error(err.toString())
+        dispatch({
+            type: transactionConstants.GET_AS_TRANSACTION_FAILURE
+        })
+    })
+
 const createTransaction = (transaction, recipientCharge, saveRecipient) => {
     return dispatch => {
         transactionService.createTransaction(transaction, recipientCharge,
@@ -40,4 +54,5 @@ const createTransaction = (transaction, recipientCharge, saveRecipient) => {
 export const transactionAction = {
     createTransaction,
     getTransactions,
+    getAsTransactions,
 }

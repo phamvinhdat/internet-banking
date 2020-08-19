@@ -7,8 +7,9 @@ const config = require('@be-root/config')
 const friendService = require('@be-src/service/friend')
 const utils = require('./utils')
 const Sequelize = require('sequelize')
-const Op = Sequelize.Op
 const moment = require('moment')
+
+const Op = Sequelize.Op
 
 const moveMoneyFee = amount => config.MOVE_MONEY_FEE * amount / 100
 
@@ -89,7 +90,7 @@ module.exports = {
             }
         }).then(r => {
             if (r === null) {
-                throw createError(httpSttCode.NOT_FOUND, 'Không có giao dịch trong ngày')
+                throw createError(httpSttCode.NOT_FOUND, 'Không có giao dịch trong 30 ngày')
             }
 
             return r
@@ -99,6 +100,41 @@ module.exports = {
 
         return transactions.map(transaction => ({
             type: transaction.receiver_account_number !== user.account_number ?
+                'send' : 'receive',
+            id: transaction.id,
+            receiver_account_number: transaction.receiver_account_number,
+            receiver_bank_code: transaction.receiver_bank_code,
+            sender_account_number: transaction.sender_account_number,
+            sender_bank_code: transaction.sender_bank_code,
+            amount: transaction.amount,
+            message: transaction.message,
+            create_at: transaction.create_at
+        }))
+    },
+    getAsTransactions: async _ => {
+        const transactions = await TransactionModel.findAll({
+            where: {
+                [Op.or]: [
+                    {
+                        receiver_bank_code: {[Op.ne]: 'YSB'}
+                    },
+                    {
+                        sender_bank_code: {[Op.ne]: 'YSB'}
+                    },
+                ]
+            }
+        }).then(r => {
+            if (r === null) {
+                throw createError(httpSttCode.NOT_FOUND, 'Không có giao dịch')
+            }
+
+            return r
+        }).catch(err => {
+            throw createError(httpSttCode.INTERNAL_SERVER_ERROR, err)
+        })
+
+        return transactions.map(transaction => ({
+            type: transaction.receiver_bank_code !== 'YSB' ?
                 'send' : 'receive',
             id: transaction.id,
             receiver_account_number: transaction.receiver_account_number,
