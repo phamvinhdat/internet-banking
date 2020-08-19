@@ -8,6 +8,7 @@ const friendService = require('@be-src/service/friend')
 const utils = require('./utils')
 const Sequelize = require('sequelize')
 const moment = require('moment')
+const notiService = require('./notification')
 
 const Op = Sequelize.Op
 
@@ -93,6 +94,11 @@ module.exports = {
         }
 
         await moveMoney(transaction, sender, recipient, recipientCharge)
+            .then(_ => {
+                notiService.createNotification(recipient.id, 'Nhận chuyển khoản',
+                    `Nhận chuyển khoản từ ${sender.account_number}`,
+                    transaction.amount)
+            })
     },
     getTransactions: async userID => {
         const user = await utils.getUserByCondition({
